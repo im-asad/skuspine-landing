@@ -1,26 +1,48 @@
-@import "tailwindcss";
+/* Tailwind utilities without preflight, so the landing page keeps
+   browser-default box sizing and form styles that the design relies on. */
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body {
+  margin: 0;
+  background: #e8ece1;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html[data-theme="dark"] body {
+  background: #0e0f0c;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.ss-dark a {
+  color: #0e0f0c;
+  text-decoration: none;
+}
+.ss-dark a:hover {
+  color: #3a3f32;
+}
+
+.ss-light a {
+  color: inherit;
+  text-decoration: none;
+}
+.ss-light a:hover {
+  color: var(--olive);
+}
+
+@keyframes ssDemoProgress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes ssPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
 }
