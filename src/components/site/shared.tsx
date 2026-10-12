@@ -51,14 +51,16 @@ export const THEME_TOKENS: Record<Theme, VarStyle> = {
   },
 };
 
-export function Logo({ href = "#" }: { href?: string }) {
+/** Logo lockup. `compact` is the smaller tablet and mobile size; `small` shrinks it further for phones. */
+export function Logo({ href = "#", compact = false, small = false }: { href?: string; compact?: boolean; small?: boolean }) {
+  compact ||= small;
   return (
     <Link
       href={href}
-      style={{ display: "flex", alignItems: "center", gap: 7, background: INK, padding: "8px 16px 8px 10px", borderRadius: 8 }}
+      style={{ display: "flex", alignItems: "center", gap: compact ? 6 : 7, background: INK, padding: compact ? "6px 12px 6px 8px" : "8px 16px 8px 10px", borderRadius: compact ? 7 : 8 }}
       aria-label="skuspine home"
     >
-      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
+      <svg width={small ? 22 : compact ? 26 : 30} height={small ? 22 : compact ? 26 : 30} viewBox="0 0 64 64" aria-hidden="true">
         <rect x="4" y="12" width="4" height="40" fill="#E8EDE0" />
         <rect x="11" y="12" width="2" height="40" fill="#E8EDE0" />
         <rect x="16" y="12" width="5" height="40" fill="#E8EDE0" />
@@ -69,7 +71,7 @@ export function Logo({ href = "#" }: { href?: string }) {
         <rect x="51" y="12" width="2" height="40" fill="#E8EDE0" />
         <rect x="56" y="12" width="4" height="40" fill="#E8EDE0" />
       </svg>
-      <span style={{ position: "relative", top: -1, fontFamily: MONO, fontSize: 20, fontWeight: 600, letterSpacing: "-0.04em", color: "#E8EDE0" }}>
+      <span style={{ position: "relative", top: -1, fontFamily: MONO, fontSize: small ? 16 : compact ? 18 : 20, fontWeight: 600, letterSpacing: "-0.04em", color: "#E8EDE0" }}>
         sku<span style={{ color: LIME }}>spine</span>
       </span>
     </Link>
@@ -98,6 +100,56 @@ export function Footer({ showOpenApp }: { showOpenApp: boolean }) {
           {CONTACT_EMAIL}
         </a>
       </div>
+    </footer>
+  );
+}
+
+/** Tablet footer, shared by every page. */
+export function FooterTablet() {
+  const link: CSSProperties = { color: "var(--muted2)" };
+  return (
+    <footer style={{ margin: "0 40px", padding: "28px 0 44px", borderTop: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 24, fontSize: 14, color: "var(--muted)" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "var(--fg)", fontWeight: 600 }}>
+          {CONTACT_EMAIL}
+        </a>
+        <span style={{ fontFamily: MONO, fontSize: 12 }}>© 2026 skuspine</span>
+      </div>
+      <div style={{ display: "flex", gap: 22 }}>
+        <a href={APP_URL} style={link}>
+          Open app
+        </a>
+        <Link href="/privacy" style={link}>
+          Privacy policy
+        </Link>
+        <Link href="/terms" style={link}>
+          Terms of service
+        </Link>
+      </div>
+    </footer>
+  );
+}
+
+/** Mobile footer, shared by every page. */
+export function FooterMobile() {
+  const link: CSSProperties = { color: "var(--muted2)" };
+  return (
+    <footer style={{ margin: "0 20px", padding: "28px 0 40px", borderTop: "1px solid var(--line)", display: "flex", flexDirection: "column", gap: 18, fontSize: 14, color: "var(--muted)" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 22px" }}>
+        <a href={APP_URL} style={link}>
+          Open app
+        </a>
+        <Link href="/privacy" style={link}>
+          Privacy policy
+        </Link>
+        <Link href="/terms" style={link}>
+          Terms of service
+        </Link>
+      </div>
+      <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "var(--fg)", fontWeight: 600 }}>
+        {CONTACT_EMAIL}
+      </a>
+      <span style={{ fontFamily: MONO, fontSize: 12 }}>© 2026 skuspine</span>
     </footer>
   );
 }

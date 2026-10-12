@@ -11,16 +11,20 @@ const input: CSSProperties = { height: 50, width: "100%", boxSizing: "border-box
 const ghostButton: CSSProperties = { height: 50, padding: "0 20px", background: "transparent", color: "var(--fg)", border: "1px solid var(--line2)", borderRadius: 10, fontFamily: "inherit", fontSize: 16, fontWeight: 500, cursor: "pointer" };
 const primaryButton: CSSProperties = { height: 50, padding: "0 24px", background: LIME, color: INK, border: 0, borderRadius: 10, fontFamily: "inherit", fontSize: 16, fontWeight: 600, cursor: "pointer" };
 
-function StepIntro({ heading, children }: { heading: string; children: ReactNode }) {
+function StepIntro({ heading, mode, children }: { heading: string; mode: Mode; children: ReactNode }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      <h3 id="df-title" style={title}>
+      <h3 id="df-title" style={mode === "mobile" ? { ...title, fontSize: 23, lineHeight: 1.25 } : mode === "tablet" ? { ...title, fontSize: 26, lineHeight: "normal" } : title}>
         {heading}
       </h3>
-      <p style={lead}>{children}</p>
+      <p style={mode === "mobile" ? { ...lead, fontSize: 15 } : lead}>{children}</p>
     </div>
   );
 }
+
+/** Layout from the design for each screen size: centred dialog on desktop and tablet, full-screen sheet on phones. */
+type Mode = "desktop" | "tablet" | "mobile";
+const currentMode = (): Mode => (window.matchMedia("(max-width: 599px)").matches ? "mobile" : window.matchMedia("(max-width: 1024px)").matches ? "tablet" : "desktop");
 
 type Report = { stage: "completed"; answers: Answers } | { stage: "incomplete"; answers: Answers; stoppedAt: number; reason: "closed" | "left" };
 
@@ -39,6 +43,24 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [ans, setAns] = useState<Answers>({});
   const [submitting, setSubmitting] = useState(false);
+  const [mode, setMode] = useState<Mode>(currentMode);
+  useEffect(() => {
+    const onResize = () => setMode(currentMode());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const compact = mode !== "desktop";
+  const mobile = mode === "mobile";
+
+  // The phone sheet covers the whole screen, so stop the page behind it from scrolling.
+  useEffect(() => {
+    if (!mobile) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [mobile]);
 
   // Exactly one email per submission: complete if they finish, incomplete if they bail out after step 1.
   const reported = useRef(false);
@@ -132,7 +154,7 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
               type="button"
               onClick={() => pick(key, option, multi)}
               aria-pressed={on}
-              style={{ padding: "10px 14px", borderRadius: 999, border: `1px solid ${on ? LIME : "var(--line2)"}`, background: on ? LIME : "var(--card)", color: on ? INK : "var(--fg)", fontFamily: "inherit", fontSize: 15, fontWeight: 500, cursor: "pointer" }}
+              style={{ padding: mobile ? "10px 13px" : "10px 14px", borderRadius: 999, border: `1px solid ${on ? LIME : "var(--line2)"}`, background: on ? LIME : "var(--card)", color: on ? INK : "var(--fg)", fontFamily: "inherit", fontSize: mobile ? 14.5 : 15, fontWeight: 500, cursor: "pointer" }}
             >
               {option}
             </button>
@@ -173,15 +195,54 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
     window.location.assign(url.toString());
   };
 
-  const stepBody: CSSProperties = { display: "flex", flexDirection: "column", gap: 26 };
-  const twoCol: CSSProperties = { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 14 };
+  const stepBody: CSSProperties = { display: "flex", flexDirection: "column", gap: mobile ? 22 : compact ? 24 : 26 };
+  // Side-by-side fields on desktop and tablet; stacked on phones.
+  const twoCol: CSSProperties = mobile ? { display: "flex", flexDirection: "column", gap: 22 } : { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 14 };
+
+  const backButton = step > 0 && (
+    <button
+      type="button"
+      onClick={() => {
+        setErrors({});
+        setStep((s) => Math.max(0, s - 1));
+      }}
+      style={mobile ? { ...ghostButton, flex: "0 0 auto", height: 52, padding: "0 18px" } : ghostButton}
+    >
+      ← Back
+    </button>
+  );
+  const nextButton = (
+    <button
+      type="button"
+      onClick={step < 3 ? goNext : goToCalendly}
+      disabled={submitting}
+      style={{ ...primaryButton, ...(mobile ? { flex: "1 1 auto", height: 52 } : {}), opacity: submitting ? 0.7 : 1, cursor: submitting ? "wait" : "pointer" }}
+    >
+      {step < 3 ? "Continue →" : submitting ? "Opening Calendly…" : "Pick a time on Calendly →"}
+    </button>
+  );
 
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(14,15,12,0.62)", display: "flex", justifyContent: "center", alignItems: "flex-start", padding: "104px 0 40px", boxSizing: "border-box", overflowY: "auto" }}>
-      <div role="dialog" aria-modal="true" aria-labelledby="df-title" style={{ width: 660, flexShrink: 0, background: "var(--surf)", color: "var(--fg)", border: "1px solid var(--line2)", borderRadius: 18, boxShadow: "0 40px 110px rgba(14,15,12,0.45)", overflow: "hidden", textAlign: "left" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 28px", borderBottom: "1px solid var(--line)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: MONO, fontSize: 13 }}>
-            <span style={{ background: LIME, color: INK, padding: "3px 8px", borderRadius: 5, fontWeight: 600 }}>Book a demo</span>
+    <div
+      style={
+        mobile
+          ? { position: "fixed", inset: 0, zIndex: 50, background: "var(--surf)", display: "flex" }
+          : { position: "fixed", inset: 0, zIndex: 50, background: compact ? "rgba(14,15,12,0.55)" : "rgba(14,15,12,0.62)", display: "flex", justifyContent: "center", alignItems: "flex-start", padding: compact ? "80px 0 40px" : "104px 0 40px", boxSizing: "border-box", overflowY: "auto" }
+      }
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="df-title"
+        style={
+          mobile
+            ? { flexGrow: 1, minWidth: 0, display: "flex", flexDirection: "column", background: "var(--surf)", color: "var(--fg)", textAlign: "left" }
+            : { width: compact ? 620 : 660, flexShrink: 0, background: "var(--surf)", color: "var(--fg)", border: "1px solid var(--line2)", borderRadius: 18, boxShadow: compact ? "0 30px 80px rgba(14,15,12,0.35)" : "0 40px 110px rgba(14,15,12,0.45)", overflow: "hidden", textAlign: "left" }
+        }
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "16px 20px" : compact ? "18px 26px" : "20px 28px", borderBottom: "1px solid var(--line)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 12, fontFamily: MONO, fontSize: mobile ? 12 : 13 }}>
+            <span style={{ background: LIME, color: INK, padding: mobile ? "3px 7px" : "3px 8px", borderRadius: 5, fontWeight: 600 }}>Book a demo</span>
             <span style={{ color: "var(--muted)" }}>Step {step + 1} of 4</span>
           </div>
           <button type="button" onClick={close} aria-label="Close" style={{ width: 36, height: 36, borderRadius: 8, border: "1px solid var(--line2)", background: "var(--card)", color: "var(--fg)", fontSize: 18, lineHeight: 1, cursor: "pointer" }}>
@@ -192,11 +253,13 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
           <div style={{ height: 4, width: `${Math.min(100, (step + 1) * 25)}%`, background: LIME, transition: "width 240ms ease" }} />
         </div>
 
-        <div style={{ padding: "32px 28px 28px" }}>
+        <div style={mobile ? { flex: "1 1 0", minHeight: 0, overflowY: "auto", padding: "26px 20px 28px" } : { padding: compact ? "30px 26px" : "32px 28px 28px" }}>
           {step === 0 && (
             <div style={stepBody}>
-              <StepIntro heading="First, who are we speaking with?">
-                It takes about a minute. Your answers shape the demo, so we walk through your channels and your kind of orders instead of a generic tour.
+              <StepIntro mode={mode} heading="First, who are we speaking with?">
+                {compact
+                  ? "It takes about a minute. Your answers shape the demo around your channels and your kind of orders."
+                  : "It takes about a minute. Your answers shape the demo, so we walk through your channels and your kind of orders instead of a generic tour."}
               </StepIntro>
               <div style={twoCol}>
                 {field("df-name", "name", "Full name", "text", "Jane Smith", "name")}
@@ -236,7 +299,7 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
           )}
           {step === 1 && (
             <div style={stepBody}>
-              <StepIntro heading="Tell us about the business">So we can connect the right stores before we meet.</StepIntro>
+              <StepIntro mode={mode} heading="Tell us about the business">So we can connect the right stores before we meet.</StepIntro>
               <div style={twoCol}>
                 {field("df-company", "company", "Company name", "text", "Acme Goods Ltd", "organization")}
                 {field("df-site", "site", "Main store or website", "url", "yourstore.com", "url", false)}
@@ -246,7 +309,7 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
           )}
           {step === 2 && (
             <div style={stepBody}>
-              <StepIntro heading="How busy does it get?">A rough idea is plenty. It helps us show you dispatch at the volume you actually run.</StepIntro>
+              <StepIntro mode={mode} heading="How busy does it get?">A rough idea is plenty. It helps us show you dispatch at the volume you actually run.</StepIntro>
               {group("orders", "Orders in a typical month", ORDERS, false)}
               {group("team", "Who handles orders today?", TEAM, false)}
               {group("loc", "Where do orders ship from?", LOCATIONS, false)}
@@ -254,7 +317,7 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
           )}
           {step === 3 && (
             <div style={stepBody}>
-              <StepIntro heading="Where you're headed">Last step. This lets us suggest the right plan and focus on what matters most to you.</StepIntro>
+              <StepIntro mode={mode} heading="Where you're headed">Last step. This lets us suggest the right plan and focus on what matters most to you.</StepIntro>
               {group("rev", "Roughly where does annual turnover sit?", REVENUE, false, "Ballpark is fine, and you can skip it.", false)}
               {group("pain", "What would you most like off your plate?", PAINS, true, "Pick any that apply.")}
               {group("time", "When would you like to be up and running?", TIMING, false)}
@@ -262,28 +325,23 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 28px", borderTop: "1px solid var(--line)", background: "var(--card)" }}>
-          <div>
-            {step > 0 && (
-              <button
-                type="button"
-                onClick={() => {
-                  setErrors({});
-                  setStep((s) => Math.max(0, s - 1));
-                }}
-                style={ghostButton}
-              >
-                ← Back
-              </button>
-            )}
+        {mobile ? (
+          <div style={{ padding: "14px 20px 26px", borderTop: "1px solid var(--line)", background: "var(--card)", display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", gap: 10 }}>
+              {backButton}
+              {nextButton}
+            </div>
+            <span style={{ textAlign: "center", fontSize: 12.5, color: "var(--muted)" }}>No commitment. No card needed.</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <span style={{ fontSize: 13, color: "var(--muted)" }}>No commitment. No card needed.</span>
-            <button type="button" onClick={step < 3 ? goNext : goToCalendly} disabled={submitting} style={{ ...primaryButton, opacity: submitting ? 0.7 : 1, cursor: submitting ? "wait" : "pointer" }}>
-              {step < 3 ? "Continue →" : submitting ? "Opening Calendly…" : "Pick a time on Calendly →"}
-            </button>
+        ) : (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: compact ? "16px 26px" : "18px 28px", borderTop: "1px solid var(--line)", background: "var(--card)" }}>
+            <div>{backButton}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              <span style={{ fontSize: 13, color: "var(--muted)" }}>No commitment. No card needed.</span>
+              {nextButton}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

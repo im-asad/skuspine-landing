@@ -25,10 +25,18 @@ export const metadata: Metadata = {
     "Ship 10x the orders with the same team. No copying addresses, no buying labels, no chasing tracking numbers. skuspine runs it for every order, autonomously.",
 };
 
+// Runs before paint so nothing flashes at the wrong size:
+// --dz scales the 1440px desktop design to fit screens between 1025px and 1439px wide;
+// --hz scales the 1182px hero demo to the width it has on tablets (40px side padding) and phones (20px).
+const fitDesktopScript = `(function(){var r=document.documentElement;function f(){var w=r.clientWidth;r.style.setProperty("--dz",w>1024&&w<1440?String(w/1440):"1");r.style.setProperty("--hz",w>1024?"1":String(Math.min(1,(w-(w<600?40:80))/1182)))}f();addEventListener("resize",f)})()`;
+
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const theme = await getTheme();
   return (
-    <html lang="en" data-theme={theme} className={`${plexMono.variable} ${instrumentSans.variable}`}>
+    <html lang="en" data-theme={theme} className={`${plexMono.variable} ${instrumentSans.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: fitDesktopScript }} />
+      </head>
       <body>
         <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
       </body>
