@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Instrument_Sans } from "next/font/google";
-import { getTheme } from "@/components/landing/theme";
+import { IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
+import ThemeProvider from "@/components/site/ThemeProvider";
+import { getTheme } from "@/components/site/theme";
 import "./globals.css";
 
 const plexMono = IBM_Plex_Mono({
@@ -9,19 +10,13 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
-
 const instrumentSans = Instrument_Sans({
   variable: "--font-instrument-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-// The page layout depends on the theme cookie, so render it per request.
+// Every page is themed from the theme cookie, so render per request.
 export const instant = false;
 
 export const metadata: Metadata = {
@@ -31,13 +26,12 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const theme = await getTheme();
   return (
-    <html
-      lang="en"
-      data-theme={await getTheme()}
-      className={`${plexMono.variable} ${plexSans.variable} ${instrumentSans.variable}`}
-    >
-      <body>{children}</body>
+    <html lang="en" data-theme={theme} className={`${plexMono.variable} ${instrumentSans.variable}`}>
+      <body>
+        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -1,6 +1,5 @@
-import Landing from "@/components/landing/Landing";
-import { getTheme } from "@/components/landing/theme";
+import Landing from "@/components/site/Landing";
 
-export default async function Home() {
-  return <Landing initialTheme={await getTheme()} />;
+export default function Home() {
+  return <Landing />;
 }
