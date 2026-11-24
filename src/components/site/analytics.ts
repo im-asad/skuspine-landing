@@ -6,13 +6,18 @@ export const GTM_ID = "GTM-PL3HNQL6";
 export type Consent = "granted" | "denied";
 export const CONSENT_COOKIE = "analytics_consent";
 
-export type AnalyticsEvent = "demo_open" | "demo_step" | "demo_abandon" | "demo_complete" | "login_click" | "email_click";
+export type AnalyticsEvent = "demo_open" | "demo_step" | "demo_abandon" | "demo_complete" | "login_click" | "email_click" | "scroll_depth" | "time_on_page";
+
+type EventParams = { button_location?: string; step?: number; scroll_percent?: number; scroll_seconds?: number; time_milestone?: number };
+
+/** Whether the visitor accepted analytics. */
+export const analyticsAllowed = () => document.cookie.split("; ").includes(`${CONSENT_COOKIE}=granted`);
 
 /** Send an event to Google Tag Manager, only if the visitor accepted analytics. Never pass personal data or form answers. */
-export function track(event: AnalyticsEvent, params: { button_location?: string; step?: number } = {}) {
-  if (!document.cookie.split("; ").includes(`${CONSENT_COOKIE}=granted`)) return;
+export function track(event: AnalyticsEvent, params: EventParams = {}) {
+  if (!analyticsAllowed()) return;
   // GTM remembers earlier values, so clear the ones this event doesn't set.
-  sendGTMEvent({ event, button_location: undefined, step: undefined, ...params });
+  sendGTMEvent({ event, button_location: undefined, step: undefined, scroll_percent: undefined, scroll_seconds: undefined, time_milestone: undefined, ...params });
 }
 
 /** Which part of the page a clicked element sits in. */

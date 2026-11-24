@@ -9,6 +9,7 @@ import LandingMobile from "./LandingMobile";
 import LandingTablet from "./LandingTablet";
 import { APP_URL, Footer, INK, LIME, Logo, MONO } from "./shared";
 import { ThemeToggle } from "./ThemeProvider";
+import { useEngagementTracking } from "./useEngagementTracking";
 
 const ORDER_FLOW_DOTS = [72, 349, 628, 907, 1184];
 
@@ -120,6 +121,7 @@ export type LayoutProps = { tick: number; openForm: (e: MouseEvent) => void };
 export default function Landing() {
   const [tick, setTick] = useState(0);
   const [formOpen, setFormOpen] = useState(false);
+  useEngagementTracking();
 
   useEffect(() => {
     const timer = setInterval(() => setTick((t) => t + 1), 1400);
