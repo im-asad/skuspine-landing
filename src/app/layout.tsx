@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
+import { getConsent } from "@/components/site/consent";
+import CookieConsent from "@/components/site/CookieConsent";
 import ThemeProvider from "@/components/site/ThemeProvider";
 import { getTheme } from "@/components/site/theme";
 import "./globals.css";
@@ -31,14 +33,16 @@ export const metadata: Metadata = {
 const fitDesktopScript = `(function(){var r=document.documentElement;function f(){var w=r.clientWidth;r.style.setProperty("--dz",w>1024&&w<1440?String(w/1440):"1");r.style.setProperty("--hz",w>1024?"1":String(Math.min(1,(w-(w<600?40:80))/1182)))}f();addEventListener("resize",f)})()`;
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const theme = await getTheme();
+  const [theme, consent] = await Promise.all([getTheme(), getConsent()]);
   return (
     <html lang="en" data-theme={theme} className={`${plexMono.variable} ${instrumentSans.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: fitDesktopScript }} />
       </head>
       <body>
-        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
+        <ThemeProvider initialTheme={theme}>
+          <CookieConsent initialConsent={consent}>{children}</CookieConsent>
+        </ThemeProvider>
       </body>
     </html>
   );

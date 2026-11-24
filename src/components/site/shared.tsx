@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import CookieSettingsButton from "./CookieSettingsButton";
 
 export type Theme = "light" | "dark";
 
@@ -96,6 +97,7 @@ export function Footer({ showOpenApp }: { showOpenApp: boolean }) {
         <Link href="/terms" style={link}>
           Terms of service
         </Link>
+        <CookieSettingsButton style={link} />
         <a href={`mailto:${CONTACT_EMAIL}`} style={link}>
           {CONTACT_EMAIL}
         </a>
@@ -125,6 +127,7 @@ export function FooterTablet() {
         <Link href="/terms" style={link}>
           Terms of service
         </Link>
+        <CookieSettingsButton style={link} />
       </div>
     </footer>
   );
@@ -145,6 +148,7 @@ export function FooterMobile() {
         <Link href="/terms" style={link}>
           Terms of service
         </Link>
+        <CookieSettingsButton style={link} />
       </div>
       <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "var(--fg)", fontWeight: 600 }}>
         {CONTACT_EMAIL}

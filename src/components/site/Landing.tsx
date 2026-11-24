@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { clickLocation, track } from "./analytics";
 import DemoForm from "./DemoForm";
 import HeroMedia from "./HeroMedia";
 import { BENEFITS, CARRIERS, COMING_SOON_STORES, LIVE_STORES, REGIONS, RETURNS_POINTS, SETUP_STEPS } from "./landingContent";
@@ -136,6 +137,7 @@ export default function Landing() {
 
   const openForm = (e: MouseEvent) => {
     e.preventDefault();
+    track("demo_open", { button_location: clickLocation(e.currentTarget, "hero") });
     setFormOpen(true);
   };
 

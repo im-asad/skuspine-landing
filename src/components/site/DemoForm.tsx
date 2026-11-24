@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { track } from "./analytics";
 import { CHANNELS, LOCATIONS, ORDERS, PAINS, REVENUE, ROLES, TEAM, TIMING, validateStep, type Answers } from "./demoQuestions";
 import { CALENDLY_URL, INK, LIME, MONO } from "./shared";
 
@@ -77,13 +78,25 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
     postReport({ stage: "incomplete", answers, stoppedAt: current + 1, reason }, true);
   }, []);
 
+  // Counted once, at any step; `finished` is also set when they go on to Calendly.
+  const finished = useRef(false);
+  const trackAbandon = useCallback(() => {
+    if (finished.current) return;
+    finished.current = true;
+    track("demo_abandon", { step: latest.current.step + 1 });
+  }, []);
+
   useEffect(() => {
-    const onLeave = () => reportIncomplete("left");
+    const onLeave = () => {
+      trackAbandon();
+      reportIncomplete("left");
+    };
     window.addEventListener("pagehide", onLeave);
     return () => window.removeEventListener("pagehide", onLeave);
-  }, [reportIncomplete]);
+  }, [reportIncomplete, trackAbandon]);
 
   const close = () => {
+    trackAbandon();
     reportIncomplete("closed");
     onClose();
   };
@@ -174,6 +187,7 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
 
   const goNext = () => {
     if (!checkStep()) return;
+    track("demo_step", { step: step + 1 });
     setStep((s) => s + 1);
   };
 
@@ -183,6 +197,8 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
     setSubmitting(true);
     // Wait briefly for the email to go out, but never keep the visitor waiting for long.
     reported.current = true;
+    finished.current = true;
+    track("demo_complete");
     await Promise.race([postReport({ stage: "completed", answers: ans }, false), new Promise((r) => setTimeout(r, 4000))]);
     const url = new URL(CALENDLY_URL);
     const name = text("name").trim();
