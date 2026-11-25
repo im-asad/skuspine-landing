@@ -11,9 +11,8 @@ import { useTheme } from "./ThemeProvider";
  */
 const HERO_VIDEO_SRC: string | null = null;
 
-/** Size of the stand-in demo window at full size: 1180px wide plus its 1px borders. */
-export const DEMO_WIDTH = 1182;
-export const DEMO_HEIGHT = 607;
+/** Width of the stand-in demo window at full size: 1180px plus its 1px borders. */
+const DEMO_WIDTH = 1182;
 
 const statCard: CSSProperties = { background: "var(--surf)", border: "1px solid var(--line)", borderRadius: 10, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 4 };
 const statLabel: CSSProperties = { fontSize: 13, color: "var(--muted)" };

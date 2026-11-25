@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { track } from "./analytics";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import { takeDemoSource, track } from "./analytics";
 import { CHANNELS, LOCATIONS, ORDERS, PAINS, REVENUE, ROLES, TEAM, TIMING, validateStep, type Answers } from "./demoQuestions";
 import { CALENDLY_URL, INK, LIME, MONO } from "./shared";
 
@@ -23,11 +23,16 @@ function StepIntro({ heading, mode, children }: { heading: string; mode: Mode; c
   );
 }
 
-/** Layout from the design for each screen size: centred dialog on desktop and tablet, full-screen sheet on phones. */
+/** Layout from the design for each screen size: roomier on desktop and tablet, stacked on phones. */
 type Mode = "desktop" | "tablet" | "mobile";
 const currentMode = (): Mode => (window.matchMedia("(max-width: 599px)").matches ? "mobile" : window.matchMedia("(max-width: 1024px)").matches ? "tablet" : "desktop");
 
-type Report = { stage: "completed"; answers: Answers } | { stage: "incomplete"; answers: Answers; stoppedAt: number; reason: "closed" | "left" };
+const onResize = (notify: () => void) => {
+  window.addEventListener("resize", notify);
+  return () => window.removeEventListener("resize", notify);
+};
+
+type Report = { stage: "completed"; answers: Answers } | { stage: "incomplete"; answers: Answers; stoppedAt: number; reason: "left" };
 
 /** Send a submission to be emailed. `sendBeacon` survives the page closing, so use it when the visitor is leaving. */
 function postReport(report: Report, leaving: boolean) {
@@ -39,29 +44,15 @@ function postReport(report: Report, leaving: boolean) {
   );
 }
 
-export default function DemoForm({ onClose }: { onClose: () => void }) {
+/** The demo request form, shown on /demo. */
+export default function DemoForm() {
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [ans, setAns] = useState<Answers>({});
   const [submitting, setSubmitting] = useState(false);
-  const [mode, setMode] = useState<Mode>(currentMode);
-  useEffect(() => {
-    const onResize = () => setMode(currentMode());
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+  const mode = useSyncExternalStore<Mode>(onResize, currentMode, () => "desktop");
   const compact = mode !== "desktop";
   const mobile = mode === "mobile";
-
-  // The phone sheet covers the whole screen, so stop the page behind it from scrolling.
-  useEffect(() => {
-    if (!mobile) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [mobile]);
 
   // Exactly one email per submission: complete if they finish, incomplete if they bail out after step 1.
   const reported = useRef(false);
@@ -70,12 +61,12 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
     latest.current = { step, ans };
   });
 
-  const reportIncomplete = useCallback((reason: "closed" | "left") => {
+  const reportIncomplete = useCallback(() => {
     const { step: current, ans: answers } = latest.current;
     // Nothing to send until they have given us their contact details on step 1.
     if (reported.current || current < 1) return;
     reported.current = true;
-    postReport({ stage: "incomplete", answers, stoppedAt: current + 1, reason }, true);
+    postReport({ stage: "incomplete", answers, stoppedAt: current + 1, reason: "left" }, true);
   }, []);
 
   // Counted once, at any step; `finished` is also set when they go on to Calendly.
@@ -89,17 +80,27 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const onLeave = () => {
       trackAbandon();
-      reportIncomplete("left");
+      reportIncomplete();
     };
     window.addEventListener("pagehide", onLeave);
     return () => window.removeEventListener("pagehide", onLeave);
   }, [reportIncomplete, trackAbandon]);
 
-  const close = () => {
-    trackAbandon();
-    reportIncomplete("closed");
-    onClose();
-  };
+  // Opening the page opens the form, and leaving it by a link within the site abandons it.
+  const card = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    finished.current = false;
+    track("demo_open", { button_location: takeDemoSource() });
+    return () => {
+      trackAbandon();
+      reportIncomplete();
+    };
+  }, [reportIncomplete, trackAbandon]);
+
+  // Steps differ in length, so bring the top of the next one back into view.
+  useEffect(() => {
+    if (step > 0 && card.current && card.current.getBoundingClientRect().top < 0) card.current.scrollIntoView();
+  }, [step]);
 
   const text = (key: string) => (ans[key] as string | undefined) ?? "";
   const setText = (key: string, value: string) => {
@@ -240,125 +241,110 @@ export default function DemoForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      style={
-        mobile
-          ? { position: "fixed", inset: 0, zIndex: 50, background: "var(--surf)", display: "flex" }
-          : { position: "fixed", inset: 0, zIndex: 50, background: compact ? "rgba(14,15,12,0.55)" : "rgba(14,15,12,0.62)", display: "flex", justifyContent: "center", alignItems: "flex-start", padding: compact ? "80px 0 40px" : "104px 0 40px", boxSizing: "border-box", overflowY: "auto" }
-      }
+      ref={card}
+      role="form"
+      aria-labelledby="df-title"
+      style={{ background: "var(--surf)", color: "var(--fg)", border: "1px solid var(--line2)", borderRadius: mobile ? 14 : 18, overflow: "hidden", textAlign: "left" }}
     >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="df-title"
-        style={
-          mobile
-            ? { flexGrow: 1, minWidth: 0, display: "flex", flexDirection: "column", background: "var(--surf)", color: "var(--fg)", textAlign: "left" }
-            : { width: compact ? 620 : 660, flexShrink: 0, background: "var(--surf)", color: "var(--fg)", border: "1px solid var(--line2)", borderRadius: 18, boxShadow: compact ? "0 30px 80px rgba(14,15,12,0.35)" : "0 40px 110px rgba(14,15,12,0.45)", overflow: "hidden", textAlign: "left" }
-        }
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "16px 20px" : compact ? "18px 26px" : "20px 28px", borderBottom: "1px solid var(--line)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 12, fontFamily: MONO, fontSize: mobile ? 12 : 13 }}>
-            <span style={{ background: LIME, color: INK, padding: mobile ? "3px 7px" : "3px 8px", borderRadius: 5, fontWeight: 600 }}>Book a demo</span>
-            <span style={{ color: "var(--muted)" }}>Step {step + 1} of 4</span>
-          </div>
-          <button type="button" onClick={close} aria-label="Close" style={{ width: 36, height: 36, borderRadius: 8, border: "1px solid var(--line2)", background: "var(--card)", color: "var(--fg)", fontSize: 18, lineHeight: 1, cursor: "pointer" }}>
-            ×
-          </button>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "16px 20px" : compact ? "18px 26px" : "20px 28px", borderBottom: "1px solid var(--line)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 12, fontFamily: MONO, fontSize: mobile ? 12 : 13 }}>
+          <span style={{ background: LIME, color: INK, padding: mobile ? "3px 7px" : "3px 8px", borderRadius: 5, fontWeight: 600 }}>Book a demo</span>
+          <span style={{ color: "var(--muted)" }}>Step {step + 1} of 4</span>
         </div>
-        <div style={{ height: 4, background: "var(--line)" }}>
-          <div style={{ height: 4, width: `${Math.min(100, (step + 1) * 25)}%`, background: LIME, transition: "width 240ms ease" }} />
-        </div>
+      </div>
+      <div style={{ height: 4, background: "var(--line)" }}>
+        <div style={{ height: 4, width: `${Math.min(100, (step + 1) * 25)}%`, background: LIME, transition: "width 240ms ease" }} />
+      </div>
 
-        <div style={mobile ? { flex: "1 1 0", minHeight: 0, overflowY: "auto", padding: "26px 20px 28px" } : { padding: compact ? "30px 26px" : "32px 28px 28px" }}>
-          {step === 0 && (
-            <div style={stepBody}>
-              <StepIntro mode={mode} heading="First, who are we speaking with?">
-                {compact
-                  ? "It takes about a minute. Your answers shape the demo around your channels and your kind of orders."
-                  : "It takes about a minute. Your answers shape the demo, so we walk through your channels and your kind of orders instead of a generic tour."}
-              </StepIntro>
-              <div style={twoCol}>
-                {field("df-name", "name", "Full name", "text", "Jane Smith", "name")}
-                {field("df-email", "email", "Work email", "email", "jane@yourstore.com", "email")}
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label htmlFor="df-role" style={label}>
-                  Your role
-                </label>
-                <div style={{ position: "relative" }}>
-                  <select
-                    id="df-role"
-                    required
-                    aria-invalid={!!errors.role}
-                    aria-describedby={errors.role ? "df-role-error" : undefined}
-                    autoComplete="organization-title"
-                    value={text("role")}
-                    onChange={(e) => setText("role", e.target.value)}
-                    style={{ ...input, color: text("role") ? "var(--fg)" : "var(--muted)", borderColor: errors.role ? "var(--warn)" : "var(--line2)", cursor: "pointer", appearance: "none", WebkitAppearance: "none", paddingRight: 48 }}
-                  >
-                    <option value="" disabled>
-                      Select your role
+      <div style={mobile ? { padding: "26px 20px 28px" } : { padding: compact ? "30px 26px" : "32px 28px 28px" }}>
+        {step === 0 && (
+          <div style={stepBody}>
+            <StepIntro mode={mode} heading="First, who are we speaking with?">
+              {compact
+                ? "It takes about a minute. Your answers shape the demo around your channels and your kind of orders."
+                : "It takes about a minute. Your answers shape the demo, so we walk through your channels and your kind of orders instead of a generic tour."}
+            </StepIntro>
+            <div style={twoCol}>
+              {field("df-name", "name", "Full name", "text", "Jane Smith", "name")}
+              {field("df-email", "email", "Work email", "email", "jane@yourstore.com", "email")}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label htmlFor="df-role" style={label}>
+                Your role
+              </label>
+              <div style={{ position: "relative" }}>
+                <select
+                  id="df-role"
+                  required
+                  aria-invalid={!!errors.role}
+                  aria-describedby={errors.role ? "df-role-error" : undefined}
+                  autoComplete="organization-title"
+                  value={text("role")}
+                  onChange={(e) => setText("role", e.target.value)}
+                  style={{ ...input, color: text("role") ? "var(--fg)" : "var(--muted)", borderColor: errors.role ? "var(--warn)" : "var(--line2)", cursor: "pointer", appearance: "none", WebkitAppearance: "none", paddingRight: 48 }}
+                >
+                  <option value="" disabled>
+                    Select your role
+                  </option>
+                  {ROLES.map((role) => (
+                    <option key={role} value={role} style={{ color: "var(--fg)" }}>
+                      {role}
                     </option>
-                    {ROLES.map((role) => (
-                      <option key={role} value={role} style={{ color: "var(--fg)" }}>
-                        {role}
-                      </option>
-                    ))}
-                  </select>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)", color: "var(--muted)", pointerEvents: "none" }}>
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </div>
-                {errorText("role")}
+                  ))}
+                </select>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)", color: "var(--muted)", pointerEvents: "none" }}>
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </div>
-            </div>
-          )}
-          {step === 1 && (
-            <div style={stepBody}>
-              <StepIntro mode={mode} heading="Tell us about the business">So we can connect the right stores before we meet.</StepIntro>
-              <div style={twoCol}>
-                {field("df-company", "company", "Company name", "text", "Acme Goods Ltd", "organization")}
-                {field("df-site", "site", "Main store or website", "url", "yourstore.com", "url", false)}
-              </div>
-              {group("ch", "Where do you sell today?", CHANNELS, true, "Pick all that apply.")}
-            </div>
-          )}
-          {step === 2 && (
-            <div style={stepBody}>
-              <StepIntro mode={mode} heading="How busy does it get?">A rough idea is plenty. It helps us show you dispatch at the volume you actually run.</StepIntro>
-              {group("orders", "Orders in a typical month", ORDERS, false)}
-              {group("team", "Who handles orders today?", TEAM, false)}
-              {group("loc", "Where do orders ship from?", LOCATIONS, false)}
-            </div>
-          )}
-          {step === 3 && (
-            <div style={stepBody}>
-              <StepIntro mode={mode} heading="Where you're headed">Last step. This lets us suggest the right plan and focus on what matters most to you.</StepIntro>
-              {group("rev", "Roughly where does annual turnover sit?", REVENUE, false, "Ballpark is fine, and you can skip it.", false)}
-              {group("pain", "What would you most like off your plate?", PAINS, true, "Pick any that apply.")}
-              {group("time", "When would you like to be up and running?", TIMING, false)}
-            </div>
-          )}
-        </div>
-
-        {mobile ? (
-          <div style={{ padding: "14px 20px 26px", borderTop: "1px solid var(--line)", background: "var(--card)", display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", gap: 10 }}>
-              {backButton}
-              {nextButton}
-            </div>
-            <span style={{ textAlign: "center", fontSize: 12.5, color: "var(--muted)" }}>No commitment. No card needed.</span>
-          </div>
-        ) : (
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: compact ? "16px 26px" : "18px 28px", borderTop: "1px solid var(--line)", background: "var(--card)" }}>
-            <div>{backButton}</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              <span style={{ fontSize: 13, color: "var(--muted)" }}>No commitment. No card needed.</span>
-              {nextButton}
+              {errorText("role")}
             </div>
           </div>
         )}
+        {step === 1 && (
+          <div style={stepBody}>
+            <StepIntro mode={mode} heading="Tell us about the business">So we can connect the right stores before we meet.</StepIntro>
+            <div style={twoCol}>
+              {field("df-company", "company", "Company name", "text", "Acme Goods Ltd", "organization")}
+              {field("df-site", "site", "Main store or website", "url", "yourstore.com", "url", false)}
+            </div>
+            {group("ch", "Where do you sell today?", CHANNELS, true, "Pick all that apply.")}
+          </div>
+        )}
+        {step === 2 && (
+          <div style={stepBody}>
+            <StepIntro mode={mode} heading="How busy does it get?">A rough idea is plenty. It helps us show you dispatch at the volume you actually run.</StepIntro>
+            {group("orders", "Orders in a typical month", ORDERS, false)}
+            {group("team", "Who handles orders today?", TEAM, false)}
+            {group("loc", "Where do orders ship from?", LOCATIONS, false)}
+          </div>
+        )}
+        {step === 3 && (
+          <div style={stepBody}>
+            <StepIntro mode={mode} heading="Where you're headed">Last step. This lets us suggest the right plan and focus on what matters most to you.</StepIntro>
+            {group("rev", "Roughly where does annual turnover sit?", REVENUE, false, "Ballpark is fine, and you can skip it.", false)}
+            {group("pain", "What would you most like off your plate?", PAINS, true, "Pick any that apply.")}
+            {group("time", "When would you like to be up and running?", TIMING, false)}
+          </div>
+        )}
       </div>
+
+      {mobile ? (
+        <div style={{ padding: "14px 20px 26px", borderTop: "1px solid var(--line)", background: "var(--card)", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", gap: 10 }}>
+            {backButton}
+            {nextButton}
+          </div>
+          <span style={{ textAlign: "center", fontSize: 12.5, color: "var(--muted)" }}>No commitment. No card needed.</span>
+        </div>
+      ) : (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: compact ? "16px 26px" : "18px 28px", borderTop: "1px solid var(--line)", background: "var(--card)" }}>
+          <div>{backButton}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <span style={{ fontSize: 13, color: "var(--muted)" }}>No commitment. No card needed.</span>
+            {nextButton}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

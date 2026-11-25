@@ -1,13 +1,23 @@
 /** Landing page copy shared by the desktop, tablet and mobile layouts. House style: no em dashes. */
 
-/** Search result description, also used in the structured data. */
-export const SITE_DESCRIPTION =
-  "Ship 10x the orders with the same team. No copying addresses, no buying labels, no chasing tracking numbers. skuspine runs it for every order, autonomously.";
+/** Search result title and description, also used in the structured data. */
+export const SITE_TITLE = "Shopify Dispatch Automation & Order Fulfillment | skuspine";
 
-export const EYEBROW = "For Shopify Sellers. Amazon and eBay coming soon.";
+export const SITE_DESCRIPTION =
+  "Automate Shopify order fulfillment: smart order routing, batch shipping labels, real time profit per order, and shipping rules automation. Book a demo today.";
+
+export const EYEBROW = "Multichannel E-Commerce Back Office Software for Shopify Sellers";
 
 export const SUBHEAD =
-  "Ship 10x the orders with the same team. Ecommerce dispatch automation for Shopify: no copying addresses, no buying labels, no chasing tracking numbers. skuspine runs every order automatically.";
+  "Autonomous order fulfillment, multichannel inventory sync, and sku level margin tracking. Scale your shopify brand 10x with the same team. ";
+
+/** Section headings: the plain part, then the highlighted part. */
+export const HEADINGS = {
+  benefits: ["Automate multichannel", "order fulfillment"],
+  how: ["How", "skuspine works"],
+  support: ["Multi carrier shipping", "for Shopify"],
+  replace: ["The Linnworks, Veeqo and ShipStation", "alternative"],
+} as const;
 
 export const BENEFITS = [
   {

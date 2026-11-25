@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import CookieSettingsButton from "./CookieSettingsButton";
+import "./site.css";
 
 export type Theme = "light" | "dark";
 
@@ -15,7 +16,7 @@ export const LIME = "#C6F432";
 export const INK = "#0E0F0C";
 
 /** Style object that also accepts CSS custom properties (e.g. `--bg`). */
-export type VarStyle = CSSProperties & Record<`--${string}`, string>;
+type VarStyle = CSSProperties & Record<`--${string}`, string>;
 
 export const THEME_TOKENS: Record<Theme, VarStyle> = {
   light: {
@@ -52,16 +53,11 @@ export const THEME_TOKENS: Record<Theme, VarStyle> = {
   },
 };
 
-/** Logo lockup. `compact` is the smaller tablet and mobile size; `small` shrinks it further for phones. */
-export function Logo({ href = "#", compact = false, small = false }: { href?: string; compact?: boolean; small?: boolean }) {
-  compact ||= small;
+/** Logo lockup. Its size follows the screen; see site.css. */
+export function Logo() {
   return (
-    <Link
-      href={href}
-      style={{ display: "flex", alignItems: "center", gap: compact ? 6 : 7, background: INK, padding: compact ? "6px 12px 6px 8px" : "8px 16px 8px 10px", borderRadius: compact ? 7 : 8 }}
-      aria-label="skuspine home"
-    >
-      <svg width={small ? 22 : compact ? 26 : 30} height={small ? 22 : compact ? 26 : 30} viewBox="0 0 64 64" aria-hidden="true">
+    <Link href="/" className="logo" aria-label="skuspine home">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
         <rect x="4" y="12" width="4" height="40" fill="#E8EDE0" />
         <rect x="11" y="12" width="2" height="40" fill="#E8EDE0" />
         <rect x="16" y="12" width="5" height="40" fill="#E8EDE0" />
@@ -72,53 +68,20 @@ export function Logo({ href = "#", compact = false, small = false }: { href?: st
         <rect x="51" y="12" width="2" height="40" fill="#E8EDE0" />
         <rect x="56" y="12" width="4" height="40" fill="#E8EDE0" />
       </svg>
-      <span style={{ position: "relative", top: -1, fontFamily: MONO, fontSize: small ? 16 : compact ? 18 : 20, fontWeight: 600, letterSpacing: "-0.04em", color: "#E8EDE0" }}>
+      <span>
         sku<span style={{ color: LIME }}>spine</span>
       </span>
     </Link>
   );
 }
 
-/** Shared footer used by the landing and legal pages. */
-export function Footer({ showOpenApp }: { showOpenApp: boolean }) {
+/** The footer on every page. Only tablet and mobile show "Open app" when `openAppOnDesktop` is false. Styled in site.css. */
+export function Footer({ openAppOnDesktop = true }: { openAppOnDesktop?: boolean }) {
   const link: CSSProperties = { color: "var(--muted2)" };
   return (
-    <footer style={{ flexGrow: 1, margin: "0 72px", padding: "28px 0 44px", borderTop: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "flex-start", fontSize: 14, color: "var(--muted)" }}>
-      <span style={{ fontFamily: MONO, fontSize: 13 }}>© 2026 skuspine</span>
-      <div style={{ display: "flex", gap: 28 }}>
-        {showOpenApp && (
-          <a href={APP_URL} style={link}>
-            Open app
-          </a>
-        )}
-        <Link href="/privacy" style={link}>
-          Privacy policy
-        </Link>
-        <Link href="/terms" style={link}>
-          Terms of service
-        </Link>
-        <CookieSettingsButton style={link} />
-        <a href={`mailto:${CONTACT_EMAIL}`} style={link}>
-          {CONTACT_EMAIL}
-        </a>
-      </div>
-    </footer>
-  );
-}
-
-/** Tablet footer, shared by every page. */
-export function FooterTablet() {
-  const link: CSSProperties = { color: "var(--muted2)" };
-  return (
-    <footer style={{ margin: "0 40px", padding: "28px 0 44px", borderTop: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 24, fontSize: 14, color: "var(--muted)" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "var(--fg)", fontWeight: 600 }}>
-          {CONTACT_EMAIL}
-        </a>
-        <span style={{ fontFamily: MONO, fontSize: 12 }}>© 2026 skuspine</span>
-      </div>
-      <div style={{ display: "flex", gap: 22 }}>
-        <a href={APP_URL} style={link}>
+    <footer className="site-footer">
+      <div className="site-footer-links">
+        <a href={APP_URL} style={link} className={openAppOnDesktop ? undefined : "only-tablet-and-mobile"}>
           Open app
         </a>
         <Link href="/privacy" style={link}>
@@ -129,31 +92,10 @@ export function FooterTablet() {
         </Link>
         <CookieSettingsButton style={link} />
       </div>
-    </footer>
-  );
-}
-
-/** Mobile footer, shared by every page. */
-export function FooterMobile() {
-  const link: CSSProperties = { color: "var(--muted2)" };
-  return (
-    <footer style={{ margin: "0 20px", padding: "28px 0 40px", borderTop: "1px solid var(--line)", display: "flex", flexDirection: "column", gap: 18, fontSize: 14, color: "var(--muted)" }}>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 22px" }}>
-        <a href={APP_URL} style={link}>
-          Open app
-        </a>
-        <Link href="/privacy" style={link}>
-          Privacy policy
-        </Link>
-        <Link href="/terms" style={link}>
-          Terms of service
-        </Link>
-        <CookieSettingsButton style={link} />
-      </div>
-      <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: "var(--fg)", fontWeight: 600 }}>
+      <a href={`mailto:${CONTACT_EMAIL}`} className="site-footer-email">
         {CONTACT_EMAIL}
       </a>
-      <span style={{ fontFamily: MONO, fontSize: 12 }}>© 2026 skuspine</span>
+      <span className="site-footer-copy">© 2026 skuspine</span>
     </footer>
   );
 }

@@ -1,10 +1,15 @@
 /* eslint-disable react/no-unescaped-entities -- legal copy is kept verbatim */
 import type { Metadata } from "next";
 import LegalPage, { LegalSection, List, P } from "@/components/site/LegalPage";
+import { pageMetadata } from "@/components/site/seo";
 import { CONTACT_EMAIL } from "@/components/site/shared";
-import { LegalJsonLd } from "@/components/site/structuredData";
+import { SubpageJsonLd } from "@/components/site/structuredData";
 
-export const metadata: Metadata = { title: "skuspine · Privacy policy" };
+export const metadata: Metadata = pageMetadata({
+  title: "skuspine · Privacy policy",
+  description: "How skuspine collects, uses, shares and protects personal data across our website, demo requests and platform, and the privacy choices you have.",
+  path: "/privacy",
+});
 
 const TOC: [string, string][] = [
   ["who", "Who we are"],
@@ -33,7 +38,7 @@ export default function PrivacyPage() {
       toc={TOC}
       seeAlso={{ href: "/terms", label: "Terms of service" }}
     >
-      <LegalJsonLd path="/privacy" name="Privacy policy" />
+      <SubpageJsonLd path="/privacy" name="Privacy policy" />
       <LegalSection {...section(0)}>
         <P>skuspine is operated by [LEGAL ENTITY NAME], registered at [REGISTERED ADDRESS], company number [COMPANY NUMBER] ("skuspine", "we", "us").</P>
         <P>

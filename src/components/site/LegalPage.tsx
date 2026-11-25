@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { Footer, FooterMobile, FooterTablet, Logo, MONO } from "./shared";
-import { ThemeToggle } from "./ThemeProvider";
+import { Footer, MONO } from "./shared";
+import { LegalHeader } from "./SiteHeader";
 
 type LegalPageProps = {
   title: string;
@@ -51,37 +51,7 @@ export default function LegalPage({ title, intro, toc, seeAlso, children }: Lega
   const half = Math.ceil(toc.length / 2);
   return (
     <div className="desk-frame legal-frame">
-      <header className="only-desktop" style={{ height: 84, flexShrink: 0, padding: "0 72px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--line)" }}>
-        <Logo href="/" />
-        <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 15, fontWeight: 500 }}>
-          <ThemeToggle />
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 18px", borderRadius: 6, background: "var(--surf)", border: "1px solid var(--line2)" }}>
-            ← Back to skuspine
-          </Link>
-        </div>
-      </header>
-      <header className="only-tablet" style={{ height: 72, flexShrink: 0, padding: "0 40px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--line)", background: "var(--bg)" }}>
-        <Logo href="/" compact />
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <ThemeToggle compact />
-          <Link href="/" style={{ display: "flex", alignItems: "center", height: 40, padding: "0 16px", borderRadius: 8, background: "var(--surf)", border: "1px solid var(--line2)", fontSize: 15, fontWeight: 500, boxSizing: "border-box" }}>
-            ← Back to skuspine
-          </Link>
-        </div>
-      </header>
-      <header className="only-mobile" style={{ height: 64, flexShrink: 0, padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--line)", background: "var(--bg)" }}>
-        <Logo href="/" small />
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <ThemeToggle compact />
-          <Link
-            href="/"
-            aria-label="Back to skuspine"
-            style={{ width: 40, height: 40, padding: 0, borderRadius: 8, background: "var(--surf)", border: "1px solid var(--line2)", color: "var(--fg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, boxSizing: "border-box" }}
-          >
-            ←
-          </Link>
-        </div>
-      </header>
+      <LegalHeader />
 
       <section className="legal-hero">
         <div className="legal-meta">
@@ -144,15 +114,7 @@ export default function LegalPage({ title, intro, toc, seeAlso, children }: Lega
         </article>
       </div>
 
-      <div className="only-desktop" style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-        <Footer showOpenApp={false} />
-      </div>
-      <div className="only-tablet">
-        <FooterTablet />
-      </div>
-      <div className="only-mobile">
-        <FooterMobile />
-      </div>
+      <Footer openAppOnDesktop={false} />
     </div>
   );
 }

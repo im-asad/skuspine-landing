@@ -1,8 +1,3 @@
-/* Tailwind utilities without preflight, so the pages keep the browser-default
-   box sizing and form styles that the design relies on. */
-@import "tailwindcss/theme";
-@import "tailwindcss/utilities";
-
 :root {
   --mono: var(--font-plex-mono), "IBM Plex Mono", monospace;
 }
@@ -344,5 +339,244 @@ summary::-webkit-details-marker {
   }
   .legal-seealso {
     padding-top: 24px;
+  }
+}
+
+/* Landing hero: one copy for every screen size. */
+.hero {
+  padding: 96px 72px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+}
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  background: var(--surf);
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  font-size: 14px;
+  color: var(--muted2);
+}
+.hero-badge {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: #c6f432;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #0e0f0c;
+}
+.hero h1 {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1.16;
+  white-space: nowrap;
+}
+.hero h1 br {
+  display: none;
+}
+.hero-title {
+  background: #c6f432;
+  color: #0e0f0c;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+.hero p {
+  margin: 0;
+  max-width: 1000px;
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--muted2);
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.hero-actions a {
+  padding: 16px 26px;
+  border-radius: 8px;
+}
+.hero-actions .hero-primary {
+  background: #c6f432;
+  color: #0e0f0c;
+}
+.hero-actions .hero-secondary {
+  background: var(--surf);
+  border: 1px solid var(--line2);
+}
+.hero > .hero-media,
+.hero > video {
+  margin-top: 40px;
+}
+@media (max-width: 1024px) {
+  .desk-frame.hero-frame {
+    width: auto;
+    zoom: 1;
+  }
+  .hero {
+    padding: 64px 40px 16px;
+    gap: 24px;
+  }
+  .hero-eyebrow {
+    gap: 9px;
+    padding: 6px 13px 6px 7px;
+    font-size: 13px;
+  }
+  .hero-badge {
+    font-size: 11px;
+    border-radius: 999px;
+  }
+  .hero h1 {
+    font-size: 54px;
+    line-height: 1.24;
+    white-space: normal;
+  }
+  .hero h1 br {
+    display: inline;
+  }
+  .hero-title {
+    background: none;
+    padding: 0;
+  }
+  .hero-line {
+    background: #c6f432;
+    padding: 0 12px;
+    border-radius: 9px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .hero p {
+    max-width: 600px;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .hero-actions {
+    font-size: 16px;
+  }
+  .hero-actions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    padding: 0 26px;
+    border-radius: 10px;
+  }
+  .hero-actions .hero-secondary {
+    padding: 0 24px;
+  }
+  .hero > .hero-media,
+  .hero > video {
+    margin-top: 12px;
+  }
+}
+@media (max-width: 599px) {
+  .hero {
+    padding: 40px 20px 8px;
+    gap: 20px;
+  }
+  .hero-eyebrow {
+    gap: 8px;
+    padding: 5px 11px 5px 6px;
+    font-size: 12px;
+  }
+  .hero-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    line-height: 1.32;
+  }
+  .hero-line {
+    padding: 0 8px;
+    border-radius: 7px;
+  }
+  .hero p {
+    max-width: none;
+    font-size: 16px;
+  }
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hero-actions a,
+  .hero-actions .hero-secondary {
+    padding: 0;
+  }
+  .hero > .hero-media,
+  .hero > video {
+    margin-top: 8px;
+  }
+}
+
+/* Book a demo page */
+.demo-body {
+  padding: 64px 72px 96px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 660px;
+  gap: 72px;
+  align-items: start;
+}
+.demo-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.demo-steps h2 {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.demo-steps ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.demo-steps li {
+  display: flex;
+  gap: 14px;
+}
+.demo-steps h3 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.demo-steps p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+@media (max-width: 1024px) {
+  .demo-body {
+    padding: 40px 40px 64px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 48px;
+  }
+}
+@media (max-width: 599px) {
+  .demo-body {
+    padding: 24px 20px 48px;
+    gap: 36px;
+  }
+  .demo-steps h2 {
+    font-size: 23px;
   }
 }

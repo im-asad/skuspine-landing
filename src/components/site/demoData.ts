@@ -1,7 +1,7 @@
 import { LIME } from "./shared";
 
 /** Sample orders that rotate through the hero product demo. */
-export const DEMO_ORDERS = [
+const DEMO_ORDERS = [
   { id: "AMZ-114-2093", ch: "Amazon", route: "Warehouse 2 · Tracked 48", m: "24.1%" },
   { id: "SHP-88412", ch: "Shopify", route: "Warehouse 1 · Express", m: "31.6%" },
   { id: "EBY-55107", ch: "eBay", route: "Address could not be verified", m: "-", ex: true },

@@ -6,7 +6,7 @@ export const GTM_ID = "GTM-PL3HNQL6";
 export type Consent = "granted" | "denied";
 export const CONSENT_COOKIE = "analytics_consent";
 
-export type AnalyticsEvent = "demo_open" | "demo_step" | "demo_abandon" | "demo_complete" | "login_click" | "email_click" | "scroll_depth" | "time_on_page";
+type AnalyticsEvent = "demo_open" | "demo_step" | "demo_abandon" | "demo_complete" | "login_click" | "email_click" | "scroll_depth" | "time_on_page";
 
 type EventParams = { button_location?: string; step?: number; scroll_percent?: number; scroll_seconds?: number; time_milestone?: number };
 
@@ -26,4 +26,19 @@ export function clickLocation(el: Element, fallback: string) {
   if (el.closest("header")) return "header";
   if (el.closest("nav")) return "menu";
   return fallback;
+}
+
+let demoSource: string | null = null;
+
+/** Note which button was clicked, so the demo page can report it. */
+export function noteDemoClick(el: Element, location: string) {
+  // Clicking the link while already on the demo page opens nothing new.
+  if (window.location.pathname !== "/demo") demoSource = clickLocation(el, location);
+}
+
+/** Where the visitor came from, or "demo_page" if they opened the page directly. */
+export function takeDemoSource() {
+  const source = demoSource ?? "demo_page";
+  demoSource = null;
+  return source;
 }

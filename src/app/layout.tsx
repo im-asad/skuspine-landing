@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
 import { getConsent } from "@/components/site/consent";
 import CookieConsent from "@/components/site/CookieConsent";
-import { SITE_DESCRIPTION } from "@/components/site/landingContent";
+import { SITE_URL } from "@/components/site/seo";
 import { SiteJsonLd } from "@/components/site/structuredData";
 import ThemeProvider from "@/components/site/ThemeProvider";
 import { getTheme } from "@/components/site/theme";
@@ -24,8 +24,8 @@ const instrumentSans = Instrument_Sans({
 export const instant = false;
 
 export const metadata: Metadata = {
-  title: "skuspine · Order fulfillment on autopilot",
-  description: SITE_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  title: "skuspine",
 };
 
 // Runs before paint so nothing flashes at the wrong size:

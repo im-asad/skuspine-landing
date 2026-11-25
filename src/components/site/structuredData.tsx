@@ -1,11 +1,11 @@
-import { SITE_DESCRIPTION } from "./landingContent";
+import { SITE_DESCRIPTION, SITE_TITLE } from "./landingContent";
+import { SITE_URL } from "./seo";
 import { CONTACT_EMAIL } from "./shared";
 
 /**
  * Structured data (JSON-LD) for search engines. Only state what visitors can also see on the site:
  * no ratings, prices, addresses or social profiles until they are real and published.
  */
-const SITE_URL = "https://www.skuspine.com";
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 const APP_ID = `${SITE_URL}/#software`;
@@ -45,7 +45,7 @@ export function HomeJsonLd() {
           "@type": "WebPage",
           "@id": `${SITE_URL}/#webpage`,
           url: `${SITE_URL}/`,
-          name: "skuspine · Order fulfillment on autopilot",
+          name: SITE_TITLE,
           description: SITE_DESCRIPTION,
           inLanguage: "en",
           isPartOf: { "@id": WEBSITE_ID },
@@ -79,8 +79,8 @@ export function HomeJsonLd() {
   );
 }
 
-/** A legal page and its place under the home page. */
-export function LegalJsonLd({ path, name }: { path: `/${string}`; name: string }) {
+/** Any other page and its place under the home page. */
+export function SubpageJsonLd({ path, name }: { path: `/${string}`; name: string }) {
   const url = `${SITE_URL}${path}`;
   return (
     <JsonLd
