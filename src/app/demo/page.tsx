@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import DemoForm from "@/components/site/DemoForm";
-import { SiteHeader } from "@/components/site/SiteHeader";
 import { pageMetadata } from "@/components/site/seo";
-import { Footer } from "@/components/site/shared";
-import { SubpageJsonLd } from "@/components/site/structuredData";
+import SubpageLayout from "@/components/site/SubpageLayout";
 
 export const metadata: Metadata = pageMetadata({
   title: "skuspine · Book a demo",
@@ -19,43 +17,26 @@ const STEPS = [
 
 export default function DemoPage() {
   return (
-    <>
-      <SiteHeader />
-      <div className="desk-frame legal-frame">
-        <SubpageJsonLd path="/demo" name="Book a demo" />
-        <section className="legal-hero">
-          <div className="legal-meta">
-            <span className="legal-tag">Demo</span>
-            Takes about a minute
-          </div>
-          <h1>
-            <span className="legal-title">Book a demo</span>
-          </h1>
-          <p>See how skuspine automates order fulfillment for Shopify sellers, from the order coming in to tracking at the door.</p>
+    <SubpageLayout path="/demo" tag="Demo" meta="Takes about a minute" h1="Book a demo" intro="See how skuspine automates order fulfillment for Shopify sellers, from the order coming in to tracking at the door.">
+      <div className="demo-body">
+        <section className="demo-steps">
+          <h2>What happens next</h2>
+          <ol>
+            {STEPS.map((s, i) => (
+              <li key={s.title}>
+                <span className="legal-badge" style={{ alignSelf: "flex-start", top: 1, minWidth: 10, textAlign: "center" }}>
+                  {i + 1}
+                </span>
+                <div>
+                  <h3>{s.title}</h3>
+                  <p>{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
-
-        <div className="demo-body">
-          <section className="demo-steps">
-            <h2>What happens next</h2>
-            <ol>
-              {STEPS.map((s, i) => (
-                <li key={s.title}>
-                  <span className="legal-badge" style={{ alignSelf: "flex-start", top: 1, minWidth: 10, textAlign: "center" }}>
-                    {i + 1}
-                  </span>
-                  <div>
-                    <h3>{s.title}</h3>
-                    <p>{s.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
-          <DemoForm />
-        </div>
-
-        <Footer openAppOnDesktop={false} />
+        <DemoForm />
       </div>
-    </>
+    </SubpageLayout>
   );
 }

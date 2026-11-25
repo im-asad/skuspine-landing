@@ -4,16 +4,16 @@
 export const SITE_TITLE = "Shopify Dispatch Automation & Order Fulfillment | skuspine";
 
 export const SITE_DESCRIPTION =
-  "Automate Shopify order fulfillment: smart order routing, batch shipping labels, real time profit per order, and shipping rules automation. Book a demo today.";
+  "Automate Shopify order fulfillment: smart order routing, batch shipping labels, inventory sync, and shipping rules automation. Book a demo today.";
 
-export const EYEBROW = "Multichannel E-Commerce Back Office Software for Shopify Sellers";
+export const EYEBROW = "E-Commerce Back Office Software for Shopify Sellers";
 
 export const SUBHEAD =
-  "Autonomous order fulfillment, multichannel inventory sync, and sku level margin tracking. Scale your shopify brand 10x with the same team. ";
+  "Autonomous order fulfillment, inventory sync, and returns in one system. Scale your Shopify brand 10x with the same team. ";
 
 /** Section headings: the plain part, then the highlighted part. */
 export const HEADINGS = {
-  benefits: ["Automate multichannel", "order fulfillment"],
+  benefits: ["Automate", "order fulfillment"],
   how: ["How", "skuspine works"],
   support: ["Multi carrier shipping", "for Shopify"],
   replace: ["The Linnworks, Veeqo and ShipStation", "alternative"],
@@ -31,9 +31,9 @@ export const BENEFITS = [
     body: "Pick lists and packing slips come straight from the order: fewer picking and packing errors, fewer refunds, no paying to ship twice.",
   },
   {
-    tag: "03 · PROFIT",
-    headline: "Higher margins",
-    body: "Real time profit tracker for ecommerce: profit per order on Shopify, sku level profitability, true landed cost. Not a spreadsheet rebuilt at month end.",
+    tag: "03 · INVENTORY",
+    headline: "Never sell what you don't have",
+    body: "Shopify inventory sync that holds stock the moment it sells, across warehouses and bundles. Prevent overselling without keeping a second count.",
   },
   {
     tag: "04 · SHIPPING",
@@ -49,26 +49,6 @@ export const SETUP_STEPS = [
   { title: "Set your shipping rules", body: "e.g. UK under 2kg, cheapest tracked. This is shipping rules automation." },
 ];
 
-export const ORDER_FLOW = [
-  { title: "Order in, stock reserved", body: "Held the moment it sells, so Shopify never shows stock that's already gone." },
-  { title: "Best route picked", body: "Order routing rules choose the warehouse and delivery partner across multiple warehouses, after comparing rates." },
-  { title: "Label and slip created", body: "Label bought, pick list and packing slip printed." },
-  { title: "Packed and collected", body: "Your team packs from the slip, the delivery partner collects." },
-  { title: "Tracked to the door", body: "Tracking sent to marketplace and customer, margin calculated." },
-];
-
-export const EXCEPTIONS_BODY =
-  "A wrong address, a delivery rejection or a stock conflict lands in one exception queue with full context. The order picks up exactly where it stopped: no re-keying, no digging through three systems.";
-
-export const RETURNS_INTRO = "Ecommerce returns management software built into the same system, not bolted on:";
-
-export const RETURNS_POINTS: [string, string][] = [
-  ["Logged with a reason", ", matched to the original order."],
-  ["Restocked", " on every channel, or written off if damaged."],
-  ["Refund and return postage", " taken off that order's margin."],
-  ["Supplier flagged", " when returns for a product keep rising."],
-];
-
 export const STORES_BODY =
   "Shopify inventory sync that keeps stock and prices honest, with dispatch automation built in. Amazon and eBay are next: same adapter framework, nothing to redo.";
 
@@ -79,7 +59,7 @@ export const CARRIERS = ["DHL", "FedEx", "UPS", "DPD", "Royal Mail", "Evri"];
 
 export const CARRIERS_NOTE = "More carriers available on request. Customs documents generated for every cross-border shipment.";
 
-export const REGIONS_BODY = "Sell and ship across borders, with cost and margin in the right currency.";
+export const REGIONS_BODY = "Sell and ship across borders, with each order in the right currency.";
 
 export const REGIONS = [
   ["UK", "GBP"],
@@ -87,12 +67,12 @@ export const REGIONS = [
   ["EU", "EUR"],
 ];
 
-export const REGIONS_NOTE = "Multi-currency margin, tax jurisdictions and customs handled per order: multichannel order management software for UK ecommerce sellers trading internationally.";
+export const REGIONS_NOTE = "Multi-currency orders, tax jurisdictions and customs handled per order: Shopify order management software for UK ecommerce sellers trading internationally.";
 
 export const LIVE_STORES = ["Shopify"];
 export const COMING_SOON_STORES = ["Amazon", "eBay", "TikTok Shop", "WooCommerce", "Etsy"];
 
 export const REPLACE_BODY = [
-  "Most teams we talk to run a shipping tool, an inventory tool and a margin spreadsheet that don't agree by month end: often Linnworks, Veeqo or ShipStation, stitched together with exports. skuspine replaces all three with one database instead of three tools connected by files.",
-  "Looking for a Linnworks alternative, a Veeqo alternative, or a ShipStation alternative UK sellers can actually trust with margin? This is it.",
+  "Most teams we talk to run a shipping tool, an inventory tool and a returns spreadsheet that don't agree by month end: often Linnworks, Veeqo or ShipStation, stitched together with exports. skuspine replaces all three with one database instead of three tools connected by files.",
+  "Looking for a Linnworks alternative, a Veeqo alternative, or a ShipStation alternative UK sellers can actually trust? This is it.",
 ];

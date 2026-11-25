@@ -39,11 +39,14 @@ function Menu({ onClose }: { onClose: () => void }) {
         </div>
       </header>
       <nav aria-label="Main">
-        <Link href="/#how" onClick={onClose} className="menu-link">
+        <Link href="/features" onClick={onClose} className="menu-link">
+          Features{arrow}
+        </Link>
+        <Link href="/how-it-works" onClick={onClose} className="menu-link">
           How it works{arrow}
         </Link>
-        <Link href="/#support" onClick={onClose} className="menu-link">
-          Channels &amp; carriers{arrow}
+        <Link href="/integrations" onClick={onClose} className="menu-link">
+          Integrations{arrow}
         </Link>
         <DemoLink className="menu-link" onClick={onClose}>
           Book a demo{arrow}
@@ -78,8 +81,9 @@ export function SiteHeader() {
         <header className="site-header">
           <Logo />
           <nav className="site-nav only-desktop">
-            <Link href="/#how">How it works</Link>
-            <Link href="/#support">Channels &amp; carriers</Link>
+            <Link href="/features">Features</Link>
+            <Link href="/how-it-works">How it works</Link>
+            <Link href="/integrations">Integrations</Link>
             <DemoLink>Book a demo</DemoLink>
           </nav>
           <div className="site-actions">

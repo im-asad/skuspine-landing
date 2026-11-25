@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ALTERNATIVES } from "./alternatives";
 import {
   BENEFITS,
@@ -7,16 +7,12 @@ import {
   CARRIERS_BODY,
   CARRIERS_NOTE,
   COMING_SOON_STORES,
-  EXCEPTIONS_BODY,
   HEADINGS,
   LIVE_STORES,
-  ORDER_FLOW,
   REGIONS,
   REGIONS_BODY,
   REGIONS_NOTE,
   REPLACE_BODY,
-  RETURNS_INTRO,
-  RETURNS_POINTS,
   SETUP_STEPS,
   STORES_BODY,
 } from "./landingContent";
@@ -47,19 +43,6 @@ function Heading({ text, className }: { text: readonly [string, string]; classNa
 
 /* ---------- Benefits ---------- */
 
-function MarginChart({ className, width, height, viewBox, right, preserve, line, loss }: { className: string; width: string; height: string; viewBox: string; right: number; preserve?: string; line: string; loss: string }) {
-  return (
-    <svg className={className} width={width} height={height} viewBox={viewBox} preserveAspectRatio={preserve} aria-hidden="true" style={{ display: "block" }}>
-      {[30, 60, 90].map((y) => (
-        <line key={y} x1="0" y1={y} x2={right} y2={y} strokeWidth="1" style={{ stroke: "var(--grid)" }} />
-      ))}
-      <polygon points={`${line} ${right},120 0,120`} fill="#C6F432" fillOpacity="0.55" />
-      <polyline points={line} fill="none" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap={preserve ? undefined : "round"} style={{ stroke: "var(--fg)" }} />
-      <polyline points={loss} fill="none" strokeWidth="2" strokeDasharray="4 4" strokeLinejoin={preserve ? undefined : "round"} style={{ stroke: "var(--warn)" }} />
-    </svg>
-  );
-}
-
 const BENEFIT_VISUALS: ReactNode[] = [
   <div key="capacity" className="ls-visual ls-v-capacity">
     <div>
@@ -86,36 +69,19 @@ const BENEFIT_VISUALS: ReactNode[] = [
     <div className="ls-slip-space" />
     <div className="ls-barcode" />
   </div>,
-  <div key="profit" className="ls-visual ls-v-margin">
-    <div className="ls-between">
-      <span>margin by sku</span>
-      <span style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--fg)" }}>
-        <span style={{ width: 7, height: 7, borderRadius: 4, background: "var(--olive)", animation: "ssPulse 1.6s ease-in-out infinite" }} />
-        live
-      </span>
+  <div key="stock" className="ls-visual ls-v-rates">
+    <div style={{ fontSize: 12, color: "var(--muted)" }}>stock · SKU-1042</div>
+    <div className="ls-rate">
+      <span>in stock</span>
+      <span>14</span>
     </div>
-    <MarginChart
-      className="only-desktop"
-      width="152"
-      height="110"
-      viewBox="0 0 172 120"
-      right={172}
-      line="0,96 20,92 40,98 60,80 80,84 100,66 120,70 140,48 160,40 172,30"
-      loss="0,70 20,76 40,72 60,88 80,94 100,104 120,100 140,110 160,112 172,114"
-    />
-    <MarginChart
-      className="only-tablet-and-mobile"
-      width="100%"
-      height="110"
-      viewBox="0 0 290 120"
-      preserve="none"
-      right={290}
-      line="0,96 34,92 68,98 101,80 135,84 169,66 203,70 236,48 270,40 290,30"
-      loss="0,70 34,76 68,72 101,88 135,94 169,104 203,100 236,110 270,112 290,114"
-    />
-    <div style={{ display: "flex", gap: 14 }}>
-      <span style={{ color: "var(--fg)" }}>- keep</span>
-      <span style={{ color: "var(--warn)" }}>- - fix or drop</span>
+    <div className="ls-rate">
+      <span>reserved</span>
+      <span>2</span>
+    </div>
+    <div className="ls-rate ls-rate-best">
+      <span>to sell ✓</span>
+      <span>12</span>
     </div>
   </div>,
   <div key="shipping" className="ls-visual ls-v-rates">
@@ -157,51 +123,18 @@ function Benefits() {
           </div>
         ))}
       </div>
+      <Link href="/features" className="ls-more-link" aria-label="View more: all skuspine features">
+        View more →
+      </Link>
     </section>
   );
 }
 
 /* ---------- How it works ---------- */
 
-/** Desktop positions on the 1312px timeline: each step's dot, and the text under it. */
-const STEP_POSITIONS = [
-  { dot: 72, text: 0, width: 200 },
-  { dot: 349, text: 267, width: 220 },
-  { dot: 628, text: 546, width: 220 },
-  { dot: 907, text: 825, width: 220 },
-  { dot: 1184, text: 1102, width: 210 },
-];
-
-/** One step on the order timeline. Step 4 is done by your team or delivery partner; the rest by skuspine. */
-function Step({ n }: { n: 1 | 2 | 3 | 4 | 5 }) {
-  const { title, body } = ORDER_FLOW[n - 1];
-  const { dot, text, width } = STEP_POSITIONS[n - 1];
-  const position = { "--dot": `${dot}px`, "--text": `${text}px`, "--text-width": `${width}px` } as CSSProperties;
+function SubHeading({ n, children }: { n: string; children: ReactNode }) {
   return (
-    <div className={`ls-step ls-step-${n}`} style={position}>
-      <div className="ls-rail">
-        <div className={n === 4 ? "ls-dot ls-dot-team" : "ls-dot"}>{n}</div>
-        <div className="ls-line" />
-      </div>
-      <div className="ls-step-text">
-        <h3>{title}</h3>
-        <p>{body}</p>
-      </div>
-    </div>
-  );
-}
-
-function Stage({ at, children }: { at: "in" | "mid" | "out"; children: ReactNode }) {
-  return (
-    <div className={`ls-stage ls-stage-${at}`}>
-      <span>{children}</span>
-    </div>
-  );
-}
-
-function SubHeading({ n, className, children }: { n: string; className?: string; children: ReactNode }) {
-  return (
-    <div className={`ls-sub ${className ?? ""}`}>
+    <div className="ls-sub">
       <span className="ls-sub-n">{n}</span>
       <span>{children}</span>
     </div>
@@ -211,19 +144,7 @@ function SubHeading({ n, className, children }: { n: string; className?: string;
 function How() {
   return (
     <section id="how" className="ls-how">
-      <div className="ls-how-head">
-        <Heading text={HEADINGS.how} />
-        <div className="ls-legend">
-          <div>
-            <span className="ls-legend-dot" style={{ background: "#C6F432", borderColor: "#0E0F0C" }} />
-            done by skuspine
-          </div>
-          <div>
-            <span className="ls-legend-dot" style={{ background: "var(--card)", borderColor: "var(--fg)" }} />
-            done by your team or delivery partner
-          </div>
-        </div>
-      </div>
+      <Heading text={HEADINGS.how} />
 
       <div className="ls-setup">
         <SubHeading n="01">Getting started: set it up once</SubHeading>
@@ -243,61 +164,11 @@ function How() {
         </div>
       </div>
 
-      <div className="ls-flow">
-        <SubHeading n="02" className="ls-flow-sub">
-          Then skuspine takes over every order, autonomously
-        </SubHeading>
-        <div className="ls-flow-area">
-          <div className="ls-flow-rule ls-flow-rule-mid" />
-          <div className="ls-flow-rule ls-flow-rule-main" />
-          <svg className="ls-flow-links only-desktop" width="1312" height="150" viewBox="0 0 1312 150" aria-hidden="true">
-            <path d="M516 6 L516 104" fill="none" strokeWidth="2" strokeDasharray="6 6" style={{ stroke: "var(--warn)" }} />
-            <path d="M1212 6 L1212 104" fill="none" strokeWidth="2" strokeDasharray="6 6" style={{ stroke: "var(--fg)" }} />
-            <circle cx="516" cy="6" r="5" style={{ fill: "var(--warn)" }} />
-            <circle cx="1212" cy="6" r="5" style={{ fill: "var(--fg)" }} />
-          </svg>
-
-          <div className="ls-steps">
-            <div className="ls-steps-col">
-              <Stage at="in">ORDER IN</Stage>
-              <Step n={1} />
-              <Stage at="mid">FULFILMENT</Stage>
-              <Step n={2} />
-              <Step n={3} />
-            </div>
-            <div className="ls-steps-col">
-              <div className="ls-steps-space" />
-              <Step n={4} />
-              <Stage at="out">DELIVERY</Stage>
-              <Step n={5} />
-            </div>
-          </div>
-
-          <div className="ls-boxes">
-            <div className="ls-box ls-box-blocked">
-              <div className="ls-box-label">IF SOMETHING BLOCKS AN ORDER</div>
-              <h3>One queue. Your team decides.</h3>
-              <p>{EXCEPTIONS_BODY}</p>
-            </div>
-            <div className="ls-box ls-box-returns">
-              <h3 className="ls-returns-label">
-                <span>IF IT COMES BACK · RETURNS AND REFUNDS</span>
-              </h3>
-              <p>{RETURNS_INTRO}</p>
-              <div className="ls-returns">
-                {RETURNS_POINTS.map(([strong, rest]) => (
-                  <div key={strong}>
-                    <span className="ls-returns-icon">↺</span>
-                    <span className="ls-returns-text">
-                      <strong>{strong}</strong>
-                      {rest}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="ls-more">
+        <SubHeading n="02">Then skuspine takes over every order, autonomously</SubHeading>
+        <Link href="/how-it-works" className="ls-more-link" aria-label="View more: how skuspine works">
+          View more →
+        </Link>
       </div>
     </section>
   );
@@ -353,6 +224,9 @@ function Support() {
           </div>
         </div>
       </div>
+      <Link href="/integrations" className="ls-more-link" aria-label="View more: all skuspine integrations">
+        View more →
+      </Link>
     </section>
   );
 }

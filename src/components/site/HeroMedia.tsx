@@ -17,7 +17,7 @@ const DEMO_WIDTH = 1182;
 const statCard: CSSProperties = { background: "var(--surf)", border: "1px solid var(--line)", borderRadius: 10, padding: "14px 16px", display: "flex", flexDirection: "column", gap: 4 };
 const statLabel: CSSProperties = { fontSize: 13, color: "var(--muted)" };
 const statValue: CSSProperties = { fontFamily: MONO, fontSize: 24, fontWeight: 600 };
-const tableGrid: CSSProperties = { display: "grid", gridTemplateColumns: "150px 100px minmax(0, 1fr) 130px 90px" };
+const tableGrid: CSSProperties = { display: "grid", gridTemplateColumns: "150px 100px minmax(0, 1fr) 130px" };
 
 /** The animated app mock-up, drawn at its full desktop size. */
 function DemoWindow({ tick }: { tick: number }) {
@@ -52,7 +52,7 @@ function DemoWindow({ tick }: { tick: number }) {
             Exceptions
             <span style={{ background: "#FFB020", color: INK, borderRadius: 4, padding: "0 6px", fontSize: 12 }}>{exceptions}</span>
           </div>
-          {["Inventory", "Margin", "Pricing", "Returns", "Stores"].map((item) => (
+          {["Inventory", "Returns", "Stores"].map((item) => (
             <div key={item} style={{ padding: "9px 10px" }}>
               {item}
             </div>
@@ -76,9 +76,9 @@ function DemoWindow({ tick }: { tick: number }) {
               <span style={{ ...statValue, color: "var(--warn)" }}>{exceptions}</span>
             </div>
             <div style={statCard}>
-              <span style={statLabel}>Margin today</span>
+              <span style={statLabel}>Automation rate</span>
               <span style={statValue}>
-                <span style={{ background: LIME, padding: "0 6px", borderRadius: 4, color: INK }}>23.8%</span>
+                <span style={{ background: LIME, padding: "0 6px", borderRadius: 4, color: INK }}>{((100 * (ordersIn - exceptions)) / ordersIn).toFixed(1)}%</span>
               </span>
             </div>
           </div>
@@ -88,7 +88,6 @@ function DemoWindow({ tick }: { tick: number }) {
               <span>Channel</span>
               <span>Route</span>
               <span>Status</span>
-              <span style={{ textAlign: "right" }}>Margin</span>
             </div>
             {rows.map((row, i) => (
               <div key={i} style={{ ...tableGrid, padding: "13px 18px", borderTop: "1px solid var(--line)", alignItems: "center", background: row.rowBg }}>
@@ -98,7 +97,6 @@ function DemoWindow({ tick }: { tick: number }) {
                 <span>
                   <span style={{ background: row.bg, color: row.fg, padding: "3px 9px", borderRadius: 999, fontSize: 12 }}>{row.label}</span>
                 </span>
-                <span style={{ textAlign: "right", fontFamily: MONO }}>{row.margin}</span>
               </div>
             ))}
           </div>

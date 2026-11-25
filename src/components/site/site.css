@@ -281,9 +281,6 @@
   height: 30px;
   background: repeating-linear-gradient(90deg, var(--fg) 0 2px, transparent 2px 4px, var(--fg) 4px 7px, transparent 7px 9px, var(--fg) 9px 10px, transparent 10px 13px);
 }
-.ls-v-margin {
-  color: var(--muted);
-}
 .ls-v-rates {
   justify-content: center;
   font-size: 13px;
@@ -303,6 +300,11 @@
   font-weight: 600;
 }
 
+.ls-benefits .ls-more-link,
+.ls-support .ls-more-link {
+  align-self: center;
+}
+
 /* How it works */
 .ls-how {
   padding: 120px 64px;
@@ -312,35 +314,10 @@
   flex-direction: column;
   gap: 64px;
 }
-.ls-how-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 48px;
-}
 .ls-how .ls-h2 {
   font-size: 46px;
   letter-spacing: -0.045em;
   line-height: 1.24;
-}
-.ls-legend {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--muted2);
-}
-.ls-legend > div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.ls-legend-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  border: 1.5px solid;
-  box-sizing: border-box;
 }
 .ls-setup {
   display: flex;
@@ -412,196 +389,22 @@
   font-size: 16px;
   font-weight: 600;
 }
-.ls-flow {
+.ls-more {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.ls-flow-sub {
-  margin-bottom: 24px;
-}
-.ls-flow-area {
-  position: relative;
-  width: 1312px;
-  height: 580px;
-}
-.ls-flow-rule {
-  position: absolute;
-}
-.ls-flow-rule-mid {
-  left: 377px;
-  top: 12px;
-  width: 558px;
-  height: 1px;
-  background: var(--line2);
-}
-.ls-flow-rule-main {
-  left: 100px;
-  top: 79px;
-  width: 1112px;
-  height: 2px;
-  background: var(--fg);
-}
-.ls-flow-links {
-  position: absolute;
-  left: 0;
-  top: 236px;
-}
-.ls-steps,
-.ls-steps-col,
-.ls-boxes,
-.ls-step,
-.ls-rail {
-  display: contents;
-}
-.ls-steps-space,
-.ls-line {
-  display: none;
-}
-.ls-stage {
-  position: absolute;
-  top: 0;
-  display: flex;
-  justify-content: center;
-}
-.ls-stage-in {
-  left: 50px;
-  width: 100px;
-}
-.ls-stage-mid {
-  left: 576px;
-  width: 160px;
-}
-.ls-stage-out {
-  left: 1152px;
-  width: 120px;
-}
-.ls-stage span {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  padding: 3px 9px;
-  border: 1px solid var(--line2);
-  border-radius: 999px;
-  background: var(--card);
-}
-.ls-dot {
-  position: absolute;
-  left: var(--dot);
-  top: 52px;
-  width: 56px;
-  height: 56px;
-  border-radius: 28px;
-  background: #c6f432;
-  border: 2px solid #0e0f0c;
-  color: #0e0f0c;
-  box-sizing: border-box;
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 17px;
-  font-weight: 700;
+  gap: 24px;
 }
-.ls-dot-team {
-  background: var(--card);
-  border-color: var(--fg);
-  color: var(--fg);
-}
-.ls-step-text {
-  position: absolute;
-  left: var(--text);
-  top: 128px;
-  width: var(--text-width);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-align: center;
-}
-.ls-step-text h3 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 600;
-}
-.ls-step-text p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--muted);
-}
-.ls-box {
-  position: absolute;
-  top: 340px;
-  height: 240px;
-  box-sizing: border-box;
-  border-radius: 14px;
-  padding: 28px 30px;
-  display: flex;
-  flex-direction: column;
-}
-.ls-box p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--muted2);
-}
-.ls-box-blocked {
-  left: 0;
-  width: 620px;
-  background: var(--warnbg);
-  border: 1.5px dashed var(--warn);
-  gap: 12px;
-}
-.ls-box-label {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  color: var(--warntext);
-  font-weight: 600;
-}
-.ls-box-blocked h3 {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-}
-.ls-box-returns {
-  left: 652px;
-  width: 660px;
-  background: var(--card);
+.ls-more-link {
+  flex-shrink: 0;
+  padding: 15px 25px;
   border: 1px solid var(--line2);
-  gap: 14px;
-}
-.ls-returns-label {
-  margin: 0;
-  display: flex;
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--fg);
+  font-size: 17px;
   font-weight: 600;
-}
-.ls-returns-label span {
-  background: #c6f432;
-  color: #0e0f0c;
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-.ls-returns {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 28px;
-}
-.ls-returns > div {
-  display: flex;
-  gap: 10px;
-}
-.ls-returns-icon {
-  font-family: var(--mono);
-  color: var(--olive);
-  font-weight: 600;
-}
-.ls-returns-text {
-  font-size: 15px;
-  line-height: 1.5;
+  text-align: center;
 }
 
 /* Channels & carriers */
@@ -1052,17 +855,6 @@
     padding: 88px 40px;
     gap: 40px;
   }
-  .ls-how-head {
-    gap: 24px;
-  }
-  .ls-legend {
-    gap: 8px;
-    font-size: 13px;
-  }
-  .ls-legend-dot {
-    width: 13px;
-    height: 13px;
-  }
   .ls-sub {
     font-size: 20px;
   }
@@ -1093,138 +885,6 @@
     width: auto;
     display: block;
     padding: 16px 20px;
-  }
-  .ls-flow {
-    gap: 0;
-  }
-  .ls-flow-area {
-    position: static;
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
-  .ls-flow-rule {
-    display: none;
-  }
-  .ls-steps {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 0 32px;
-  }
-  .ls-steps-col {
-    display: block;
-  }
-  .ls-steps-space {
-    display: block;
-    height: 30px;
-  }
-  .ls-stage {
-    position: static;
-    width: auto;
-    justify-content: flex-start;
-    padding: 0 0 8px;
-  }
-  .ls-stage span {
-    font-size: 10.5px;
-  }
-  .ls-step {
-    display: flex;
-    gap: 14px;
-  }
-  .ls-rail {
-    width: 40px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .ls-dot {
-    position: static;
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    border-radius: 20px;
-    border-width: 1.5px;
-    font-size: 15px;
-  }
-  .ls-dot-team {
-    border-width: 2px;
-  }
-  .ls-line {
-    display: block;
-    flex-grow: 1;
-    width: 2px;
-    background: var(--fg);
-    margin: 4px 0;
-  }
-  .ls-step-text {
-    position: static;
-    width: auto;
-    gap: 4px;
-    padding: 8px 0 22px;
-    text-align: left;
-  }
-  .ls-step-text h3 {
-    font-size: 16px;
-  }
-  .ls-step-3 .ls-line,
-  .ls-step-5 .ls-line {
-    display: none;
-  }
-  .ls-step-3 .ls-step-text,
-  .ls-step-5 .ls-step-text {
-    padding-bottom: 4px;
-  }
-  .ls-boxes {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .ls-box {
-    position: static;
-    width: auto;
-    height: auto;
-    padding: 24px;
-  }
-  .ls-box p {
-    font-size: 14.5px;
-    color: var(--muted);
-  }
-  .ls-box-blocked {
-    gap: 10px;
-  }
-  .ls-box-label {
-    font-size: 11.5px;
-  }
-  .ls-box-blocked h3 {
-    font-size: 19px;
-  }
-  .ls-box-returns {
-    border-color: var(--line);
-    gap: 12px;
-  }
-  .ls-returns-label {
-    display: block;
-    font-size: 11.5px;
-    line-height: 1.5;
-    color: var(--olive);
-  }
-  .ls-returns-label span {
-    background: none;
-    color: inherit;
-    padding: 0;
-  }
-  .ls-returns {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 14.5px;
-    line-height: 1.5;
-  }
-  .ls-returns-text {
-    font-size: inherit;
   }
 
   .ls-support {
@@ -1446,11 +1106,6 @@
     padding: 64px 20px;
     gap: 28px;
   }
-  .ls-how-head {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 18px;
-  }
   .ls-setup {
     gap: 14px;
   }
@@ -1496,37 +1151,14 @@
     padding: 16px 18px;
     font-size: 15px;
   }
-  .ls-flow-sub {
-    margin-bottom: 22px;
+  .ls-benefits .ls-more-link,
+  .ls-support .ls-more-link {
+    align-self: stretch;
   }
-  .ls-flow-area {
-    gap: 28px;
-  }
-  .ls-steps {
-    display: block;
-  }
-  .ls-steps-space {
-    display: none;
-  }
-  .ls-step-3 .ls-line {
-    display: block;
-  }
-  .ls-step-3 .ls-step-text {
-    padding-bottom: 22px;
-  }
-  .ls-boxes {
-    display: flex;
+  .ls-more {
     flex-direction: column;
-    gap: 14px;
-  }
-  .ls-box {
-    padding: 22px;
-  }
-  .ls-box-returns {
-    gap: 14px;
-  }
-  .ls-returns {
-    gap: 12px;
+    align-items: stretch;
+    gap: 18px;
   }
 
   .ls-support {

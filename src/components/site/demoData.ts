@@ -2,13 +2,13 @@ import { LIME } from "./shared";
 
 /** Sample orders that rotate through the hero product demo. */
 const DEMO_ORDERS = [
-  { id: "AMZ-114-2093", ch: "Amazon", route: "Warehouse 2 · Tracked 48", m: "24.1%" },
-  { id: "SHP-88412", ch: "Shopify", route: "Warehouse 1 · Express", m: "31.6%" },
-  { id: "EBY-55107", ch: "eBay", route: "Address could not be verified", m: "-", ex: true },
-  { id: "AMZ-114-2101", ch: "Amazon", route: "Warehouse 2 · Customs docs attached", shortRoute: "Warehouse 2 · Customs docs", m: "18.9%" },
-  { id: "SHP-88430", ch: "Shopify", route: "Warehouse 2 · Standard", m: "27.3%" },
-  { id: "EBY-55126", ch: "eBay", route: "Warehouse 1 · Tracked 24", m: "22.5%" },
-  { id: "AMZ-114-2117", ch: "Amazon", route: "Warehouse 1 · Tracked 48", m: "20.4%" },
+  { id: "AMZ-114-2093", ch: "Amazon", route: "Warehouse 2 · Tracked 48" },
+  { id: "SHP-88412", ch: "Shopify", route: "Warehouse 1 · Express" },
+  { id: "EBY-55107", ch: "eBay", route: "Address could not be verified", ex: true },
+  { id: "AMZ-114-2101", ch: "Amazon", route: "Warehouse 2 · Customs docs attached", shortRoute: "Warehouse 2 · Customs docs" },
+  { id: "SHP-88430", ch: "Shopify", route: "Warehouse 2 · Standard" },
+  { id: "EBY-55126", ch: "eBay", route: "Warehouse 1 · Tracked 24" },
+  { id: "AMZ-114-2117", ch: "Amazon", route: "Warehouse 1 · Tracked 48" },
 ];
 
 export const DEMO_EXCEPTIONS = 3;
@@ -21,17 +21,14 @@ export function demoRows(tick: number, dark: boolean, count: number) {
     const o = pool[(tick - i + pool.length * 1000) % pool.length];
     let label = "Shipped";
     let [bg, fg] = dark ? ["#2B3510", LIME] : ["#EAF5C4", "#3E5400"];
-    let margin = o.m;
     if (o.ex && i >= 1) {
       label = "Exception";
       [bg, fg] = ["#FFE7B3", "#7A4B00"];
-      margin = "-";
     } else if (i <= 2) {
       label = ["Ingested", "Routed", "Label bought"][i];
       [bg, fg] = pending;
-      margin = "-";
     }
     const rowBg = i === 0 ? (dark ? "#1E2414" : "#F6FBE3") : dark ? "#151711" : "#F4F5EF";
-    return { id: o.id, ch: o.ch, route: o.route, shortRoute: o.shortRoute ?? o.route, label, bg, fg, margin, rowBg };
+    return { id: o.id, ch: o.ch, route: o.route, shortRoute: o.shortRoute ?? o.route, label, bg, fg, rowBg };
   });
 }

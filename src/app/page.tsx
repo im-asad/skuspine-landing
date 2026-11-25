@@ -8,7 +8,7 @@ export const metadata: Metadata = pageMetadata({
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
   ogTitle: "skuspine: Shopify Order Fulfillment, Automated",
-  ogDescription: "Ship 10x the orders with the same team. Automated routing, batch labels, and real time profit per order, built for Shopify sellers.",
+  ogDescription: "Ship 10x the orders with the same team. Automated routing, batch labels, and inventory sync, built for Shopify sellers.",
   path: "/",
 });
 

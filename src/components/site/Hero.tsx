@@ -1,3 +1,4 @@
+import Link from "next/link";
 import DemoLink from "./DemoLink";
 import HeroMedia from "./HeroMedia";
 import { EYEBROW, SUBHEAD } from "./landingContent";
@@ -20,9 +21,9 @@ export default function Hero({ tick }: { tick: number }) {
         <p>{SUBHEAD}</p>
         <div className="hero-actions">
           <DemoLink className="hero-primary">Book a demo →</DemoLink>
-          <a href="#how" className="hero-secondary">
+          <Link href="/how-it-works" className="hero-secondary">
             See how it works
-          </a>
+          </Link>
         </div>
 
         {/* Product demo (plays as a video once one is added) */}

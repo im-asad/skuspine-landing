@@ -49,7 +49,7 @@ export default function TermsPage() {
       <SubpageJsonLd path="/terms" name="Terms of service" />
       <LegalSection {...section(0)}>
         <P>
-          skuspine is a back-office platform for multi-channel e-commerce businesses, provided by [LEGAL ENTITY NAME] ("skuspine", "we"). It imports orders from the stores you connect, applies the dispatch rules you set, buys shipping labels, books delivery partners, sends tracking back to your marketplaces, keeps stock in sync, tracks returns and calculates margin.
+          skuspine is a back-office platform for Shopify e-commerce businesses, provided by [LEGAL ENTITY NAME] ("skuspine", "we"). It imports orders from the stores you connect, applies the dispatch rules you set, buys shipping labels, books delivery partners, sends tracking back to your marketplaces, keeps stock in sync and tracks returns.
         </P>
         <P>We may improve, change or add features over time. We will not remove a core feature you rely on during a paid term without reasonable notice.</P>
       </LegalSection>
@@ -91,7 +91,7 @@ export default function TermsPage() {
 
       <LegalSection {...section(5)}>
         <P>
-          skuspine does not process customer payments, issue refunds through marketplaces or handle payouts; those stay with each channel's checkout. It records tax as reported by your channels but does not calculate tax liability or file returns. Margin figures depend on the cost, fee and spend data available to us and are management information, not accounting or tax advice.
+          skuspine does not process customer payments, issue refunds through marketplaces or handle payouts; those stay with each channel's checkout. It records tax as reported by your channels but does not calculate tax liability or file returns. Figures shown in skuspine depend on the data available to us and are management information, not accounting or tax advice.
         </P>
       </LegalSection>
 

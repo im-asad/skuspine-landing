@@ -69,7 +69,7 @@ export default function PrivacyPage() {
 
       <LegalSection {...section(2)}>
         <P>
-          <strong>To run the service you signed up for</strong> (performance of a contract): importing orders, buying labels, booking delivery partners, sending tracking back to marketplaces, calculating margin and handling returns.
+          <strong>To run the service you signed up for</strong> (performance of a contract): importing orders, buying labels, booking delivery partners, sending tracking back to marketplaces and handling returns.
         </P>
         <P>
           <strong>To respond to your demo request and follow up</strong> (legitimate interests): we use your answers to prepare a relevant demo and to suggest a suitable plan. We will not add you to a marketing list without your consent.
@@ -132,7 +132,7 @@ export default function PrivacyPage() {
 
       <LegalSection {...section(7)}>
         <P>
-          Data is encrypted in transit and at rest. Each merchant's data is isolated at the database level, so one merchant can never read another's records. Access to cost and margin data is restricted by role, administrative actions are audit-logged, and marketplace and carrier credentials are encrypted and inaccessible to our staff. skuspine does not process card data.
+          Data is encrypted in transit and at rest. Each merchant's data is isolated at the database level, so one merchant can never read another's records. Access to commercial data is restricted by role, administrative actions are audit-logged, and marketplace and carrier credentials are encrypted and inaccessible to our staff. skuspine does not process card data.
         </P>
         <P>No system is perfectly secure. If a breach affects your personal data, we will notify you and the relevant regulator as the law requires.</P>
       </LegalSection>

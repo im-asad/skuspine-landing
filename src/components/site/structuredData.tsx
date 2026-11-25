@@ -69,7 +69,7 @@ export function HomeJsonLd() {
             "Pick lists and packing slips",
             "Shopify inventory sync",
             "Tracking sent back automatically",
-            "Profit per order and SKU level profitability",
+            "Multi location inventory and bundles",
             "Exception queue for blocked orders",
             "Returns and refunds management",
           ],
