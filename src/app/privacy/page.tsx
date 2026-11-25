@@ -40,12 +40,12 @@ export default function PrivacyPage() {
     >
       <SubpageJsonLd path="/privacy" name="Privacy policy" />
       <LegalSection {...section(0)}>
-        <P>skuspine is operated by [LEGAL ENTITY NAME], registered at [REGISTERED ADDRESS], company number [COMPANY NUMBER] ("skuspine", "we", "us").</P>
+        <P>This website and the skuspine platform are provided by skuspine ("skuspine", "we", "us").</P>
         <P>
           For data about you as a website visitor, demo requester or account user, we are the <strong>controller</strong>. For data our merchants bring into the platform about their own customers (for example a delivery address on an order), the merchant is the controller and we act as their <strong>processor</strong>, under our Data Processing Agreement.
         </P>
         <P>
-          Questions about privacy go to <Email />.
+          Questions about privacy go to <Email />. Details of the business behind skuspine are available on request at the same address.
         </P>
       </LegalSection>
 
@@ -98,10 +98,10 @@ export default function PrivacyPage() {
         <P>We share data only with the service providers we need to run skuspine, each under a written agreement:</P>
         <List
           items={[
-            "Cloud hosting and storage ([HOSTING PROVIDER], [REGION])",
+            "Cloud hosting and storage",
             "Shipping rate and label services, and the delivery partners you enable, which receive the delivery details needed to ship each order",
             "The marketplaces you connect, which receive tracking numbers and order status",
-            "Payment processing for subscriptions ([PAYMENT PROVIDER])",
+            "Payment processing for subscriptions",
             "Email delivery and customer support tools",
             "Language model providers, for the features described above",
           ]}
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
           <strong>Demo requests:</strong> up to 24 months after our last contact, unless you become a customer or ask us to delete them sooner.
         </P>
         <P>
-          <strong>Account and platform data:</strong> for as long as your subscription is active. After cancellation you have [30] days to export your data, after which it is deleted from live systems and removed from backups within a further [90] days.
+          <strong>Account and platform data:</strong> for as long as your subscription is active. After cancellation you have 30 days to export your data, after which it is deleted from live systems and removed from backups within a further 90 days.
         </P>
         <P>
           <strong>Billing records:</strong> as long as tax and accounting law requires, typically six years.

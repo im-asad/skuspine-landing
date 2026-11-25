@@ -56,7 +56,7 @@ export default function LegalPage({ title, intro, toc, seeAlso, children }: Lega
       <section className="legal-hero">
         <div className="legal-meta">
           <span className="legal-tag">Legal</span>
-          Last updated: October 2026
+          Last updated: November 2026
         </div>
         <h1>
           <span className="legal-title">{title}</span>

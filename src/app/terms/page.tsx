@@ -49,7 +49,7 @@ export default function TermsPage() {
       <SubpageJsonLd path="/terms" name="Terms of service" />
       <LegalSection {...section(0)}>
         <P>
-          skuspine is a back-office platform for Shopify e-commerce businesses, provided by [LEGAL ENTITY NAME] ("skuspine", "we"). It imports orders from the stores you connect, applies the dispatch rules you set, buys shipping labels, books delivery partners, sends tracking back to your marketplaces, keeps stock in sync and tracks returns.
+          skuspine is a back-office platform for Shopify e-commerce businesses, provided by skuspine ("skuspine", "we"). It imports orders from the stores you connect, applies the dispatch rules you set, buys shipping labels, books delivery partners, sends tracking back to your marketplaces, keeps stock in sync and tracks returns.
         </P>
         <P>We may improve, change or add features over time. We will not remove a core feature you rely on during a paid term without reasonable notice.</P>
       </LegalSection>
@@ -64,7 +64,7 @@ export default function TermsPage() {
         <P>Plans are billed in advance, monthly or annually, at the price shown when you subscribe. Subscriptions renew automatically until cancelled. Fees exclude taxes, which are added where applicable.</P>
         <P>Delivery partner charges for the labels you buy are separate from your skuspine subscription and are billed by the delivery partner or under your own carrier account, as configured.</P>
         <P>
-          If a payment fails, we will let you know and may suspend the service after [14] days. We will give at least [30] days' notice of any price change, which applies from your next renewal. Fees already paid are non-refundable except where the law requires or these terms say otherwise.
+          If a payment fails, we will let you know and may suspend the service after 14 days. We will give at least 30 days' notice of any price change, which applies from your next renewal. Fees already paid are non-refundable except where the law requires or these terms say otherwise.
         </P>
       </LegalSection>
 
@@ -99,7 +99,7 @@ export default function TermsPage() {
         <P>
           You own your data. You give us permission to host, process and transmit it only to provide and support the service, and as described in our <Link href="/privacy">Privacy policy</Link>. Where we process personal data on your behalf, our Data Processing Agreement forms part of these terms.
         </P>
-        <P>You can export your data at any time while subscribed and for [30] days after your subscription ends. After that we delete it as set out in the Privacy policy.</P>
+        <P>You can export your data at any time while subscribed and for 30 days after your subscription ends. After that we delete it as set out in the Privacy policy.</P>
         <P>We may use aggregated, de-identified usage statistics that do not identify you or your customers to operate and improve skuspine.</P>
       </LegalSection>
 
@@ -152,23 +152,23 @@ export default function TermsPage() {
 
       <LegalSection {...section(15)}>
         <P>
-          You can cancel at any time from your account settings; cancellation takes effect at the end of your current billing period. We can suspend or end your account if you materially breach these terms and do not fix the breach within [14] days of notice, or immediately where needed to protect the service or other users. On termination your right to use skuspine ends and your data is handled as described under "Your data".
+          You can cancel at any time from your account settings; cancellation takes effect at the end of your current billing period. We can suspend or end your account if you materially breach these terms and do not fix the breach within 14 days of notice, or immediately where needed to protect the service or other users. On termination your right to use skuspine ends and your data is handled as described under "Your data".
         </P>
       </LegalSection>
 
       <LegalSection {...section(16)}>
-        <P>We may update these terms. For material changes we will give account holders at least [30] days' notice by email. Continuing to use skuspine after the changes take effect means you accept them.</P>
+        <P>We may update these terms. For material changes we will give account holders at least 30 days' notice by email. Continuing to use skuspine after the changes take effect means you accept them.</P>
       </LegalSection>
 
       <LegalSection {...section(17)}>
         <P>
-          These terms are governed by the laws of [England and Wales], and the courts of [England and Wales] have exclusive jurisdiction, unless the law where you are based requires otherwise.
+          These terms are governed by the laws of England and Wales, and the courts of England and Wales have exclusive jurisdiction, unless the law where you are based requires otherwise.
         </P>
       </LegalSection>
 
       <LegalSection {...section(18)}>
         <P>
-          [LEGAL ENTITY NAME], [REGISTERED ADDRESS]. Email: <Email />.
+          You can reach skuspine at <Email />. Details of the business behind skuspine are available on request at the same address.
         </P>
       </LegalSection>
     </LegalPage>
