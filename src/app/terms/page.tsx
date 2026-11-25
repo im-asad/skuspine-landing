@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage, { LegalSection, List, P } from "@/components/site/LegalPage";
 import { CONTACT_EMAIL } from "@/components/site/shared";
+import { LegalJsonLd } from "@/components/site/structuredData";
 
 export const metadata: Metadata = { title: "skuspine · Terms of service" };
 
@@ -40,6 +41,7 @@ export default function TermsPage() {
       toc={TOC}
       seeAlso={{ href: "/privacy", label: "Privacy policy" }}
     >
+      <LegalJsonLd path="/terms" name="Terms of service" />
       <LegalSection {...section(0)}>
         <P>
           skuspine is a back-office platform for multi-channel e-commerce businesses, provided by [LEGAL ENTITY NAME] ("skuspine", "we"). It imports orders from the stores you connect, applies the dispatch rules you set, buys shipping labels, books delivery partners, sends tracking back to your marketplaces, keeps stock in sync, tracks returns and calculates margin.

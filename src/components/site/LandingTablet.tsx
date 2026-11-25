@@ -3,7 +3,26 @@
 import { useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import HeroMedia from "./HeroMedia";
 import type { LayoutProps } from "./Landing";
-import { BENEFITS, CARRIERS, COMING_SOON_STORES, LIVE_STORES, REGIONS, RETURNS_POINTS, SETUP_STEPS } from "./landingContent";
+import {
+  BENEFITS,
+  CARRIERS,
+  CARRIERS_BODY,
+  CARRIERS_NOTE,
+  COMING_SOON_STORES,
+  EXCEPTIONS_BODY,
+  EYEBROW,
+  LIVE_STORES,
+  ORDER_FLOW,
+  REGIONS,
+  REGIONS_BODY,
+  REGIONS_NOTE,
+  REPLACE_BODY,
+  RETURNS_INTRO,
+  RETURNS_POINTS,
+  SETUP_STEPS,
+  STORES_BODY,
+  SUBHEAD,
+} from "./landingContent";
 import { APP_URL, CONTACT_EMAIL, FooterTablet, INK, LIME, Logo, MONO } from "./shared";
 import { ThemeToggle } from "./ThemeProvider";
 
@@ -225,7 +244,7 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
       <section style={{ padding: "64px 40px 16px", display: "flex", flexDirection: "column", alignItems: "center", gap: 24, textAlign: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 9, padding: "6px 13px 6px 7px", background: "var(--surf)", border: "1px solid var(--line2)", borderRadius: 999, fontSize: 13, color: "var(--muted2)" }}>
           <span style={{ fontFamily: MONO, fontSize: 11, background: LIME, padding: "2px 7px", borderRadius: 999, color: INK }}>BETA</span>
-          For Multi-Channel E-Commerce Businesses
+          {EYEBROW}
         </div>
         <h1 style={{ margin: 0, fontFamily: MONO, fontSize: 54, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1.24 }}>
           <Highlight padding="0 12px" radius={9}>
@@ -237,7 +256,7 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
           </Highlight>
         </h1>
         <p style={{ margin: 0, maxWidth: 600, fontSize: 18, lineHeight: 1.6, color: "var(--muted2)" }}>
-          Ship 10x the orders with the same team. No copying addresses, no buying labels, no chasing tracking numbers. skuspine runs it for every order, autonomously.
+          {SUBHEAD}
         </p>
         <div style={{ display: "flex", gap: 12 }}>
           <a href="#" onClick={openForm} style={{ ...bigButton, background: LIME, color: INK, padding: "0 26px" }}>
@@ -317,16 +336,16 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
           <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: "0 32px" }}>
             <div>
               <Stage>ORDER IN</Stage>
-              <TimelineStep n={1} title="Order in, stock reserved" body="The item is held on every channel, so it can't sell twice." />
+              <TimelineStep n={1} {...ORDER_FLOW[0]} />
               <Stage>FULFILMENT</Stage>
-              <TimelineStep n={2} title="Best route picked" body="Your rules choose the warehouse and delivery partner, after comparing rates." />
-              <TimelineStep n={3} title="Label and slip created" body="Shipping label bought. Pick list and packing slip print in your warehouse." last />
+              <TimelineStep n={2} {...ORDER_FLOW[1]} />
+              <TimelineStep n={3} {...ORDER_FLOW[2]} last />
             </div>
             <div>
               <div style={{ height: 30 }} />
-              <TimelineStep n={4} title="Packed and collected" body="Your team packs from the slip. The delivery partner collects." byTeam />
+              <TimelineStep n={4} {...ORDER_FLOW[3]} byTeam />
               <Stage>DELIVERY</Stage>
-              <TimelineStep n={5} title="Tracked to the door" body="Tracking sent to marketplace and customer. Margin calculated." last />
+              <TimelineStep n={5} {...ORDER_FLOW[4]} last />
             </div>
           </div>
         </div>
@@ -336,12 +355,12 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
             <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.1em", color: "var(--warntext)", fontWeight: 600 }}>IF SOMETHING BLOCKS AN ORDER</div>
             <h3 style={{ margin: 0, fontSize: 19, fontWeight: 600 }}>One queue. Your team decides.</h3>
             <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: "var(--muted)" }}>
-              A wrong address, a delivery partner rejection or a stock conflict lands in one exception queue with everything needed to decide. Once your team makes the call, the order picks up exactly where it stopped.
+              {EXCEPTIONS_BODY}
             </p>
           </div>
           <div style={{ background: "var(--card)", border: "1px solid var(--line)", borderRadius: 14, padding: 24, display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.1em", color: "var(--olive)", fontWeight: 600 }}>IF IT COMES BACK</div>
-            <h3 style={{ margin: 0, fontSize: 19, fontWeight: 600 }}>Returns and refunds, tracked.</h3>
+            <h3 style={{ margin: 0, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.1em", lineHeight: 1.5, color: "var(--olive)", fontWeight: 600 }}>IF IT COMES BACK · RETURNS AND REFUNDS</h3>
+            <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: "var(--muted)" }}>{RETURNS_INTRO}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 14.5, lineHeight: 1.5 }}>
               {RETURNS_POINTS.map(([strong, rest]) => (
                 <div key={strong} style={{ display: "flex", gap: 10 }}>
@@ -366,7 +385,7 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
           <div style={supportCard}>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <div style={{ fontSize: 19, fontWeight: 600 }}>Stores</div>
-              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>Orders, stock and prices from every marketplace you sell on.</p>
+              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>{STORES_BODY}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", fontSize: 16 }}>
               {LIVE_STORES.map((s) => (
@@ -386,7 +405,7 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
           <div style={supportCard}>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <div style={{ fontSize: 19, fontWeight: 600 }}>Delivery partners</div>
-              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>One carrier network: rates compared, labels bought and tracking sent back automatically.</p>
+              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>{CARRIERS_BODY}</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 8 }}>
               {CARRIERS.map((c) => (
@@ -395,14 +414,14 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
                 </div>
               ))}
             </div>
-            <div style={{ fontSize: 14, lineHeight: 1.55, color: "var(--muted)" }}>More carriers available on request. Customs documents generated for every cross-border shipment.</div>
+            <div style={{ fontSize: 14, lineHeight: 1.55, color: "var(--muted)" }}>{CARRIERS_NOTE}</div>
           </div>
         </div>
         <div style={supportCard}>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <div style={{ fontSize: 19, fontWeight: 600 }}>Regions</div>
             <p style={{ margin: 0, fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>
-              Sell and ship across borders, with cost and margin in the right currency. Multi-currency margin, tax jurisdictions and customs handled per order.
+              {REGIONS_BODY} {REGIONS_NOTE}
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>
@@ -417,6 +436,17 @@ export default function LandingTablet({ tick, openForm }: LayoutProps) {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Replacing your stack */}
+      <section style={{ padding: "0 40px 88px" }}>
+        <div style={{ background: "var(--panel)", color: "#E8EDE0", borderRadius: 14, padding: 32, display: "flex", flexDirection: "column", gap: 18, fontSize: 16, lineHeight: 1.6 }}>
+          <h2 style={{ ...sectionTitle, fontSize: 34, lineHeight: 1.3 }}>
+            Replacing <Highlight>your stack</Highlight>
+          </h2>
+          <p style={{ margin: 0, color: "#C9CFBF" }}>{REPLACE_BODY[0]}</p>
+          <p style={{ margin: 0, fontWeight: 600 }}>{REPLACE_BODY[1]}</p>
         </div>
       </section>
 

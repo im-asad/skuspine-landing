@@ -4,7 +4,26 @@ import { useEffect, useState, type CSSProperties, type MouseEvent, type ReactNod
 import { clickLocation, track } from "./analytics";
 import DemoForm from "./DemoForm";
 import HeroMedia from "./HeroMedia";
-import { BENEFITS, CARRIERS, COMING_SOON_STORES, LIVE_STORES, REGIONS, RETURNS_POINTS, SETUP_STEPS } from "./landingContent";
+import {
+  BENEFITS,
+  CARRIERS,
+  CARRIERS_BODY,
+  CARRIERS_NOTE,
+  COMING_SOON_STORES,
+  EXCEPTIONS_BODY,
+  EYEBROW,
+  LIVE_STORES,
+  ORDER_FLOW,
+  REGIONS,
+  REGIONS_BODY,
+  REGIONS_NOTE,
+  REPLACE_BODY,
+  RETURNS_INTRO,
+  RETURNS_POINTS,
+  SETUP_STEPS,
+  STORES_BODY,
+  SUBHEAD,
+} from "./landingContent";
 import LandingMobile from "./LandingMobile";
 import LandingTablet from "./LandingTablet";
 import { APP_URL, Footer, INK, LIME, Logo, MONO } from "./shared";
@@ -13,12 +32,13 @@ import { useEngagementTracking } from "./useEngagementTracking";
 
 const ORDER_FLOW_DOTS = [72, 349, 628, 907, 1184];
 
-const ORDER_FLOW_STEPS = [
-  { left: 0, width: 200, title: "Order in, stock reserved", body: "The item is held on every channel, so it can't sell twice." },
-  { left: 267, width: 220, title: "Best route picked", body: "Your rules choose the warehouse and delivery partner, after comparing rates." },
-  { left: 546, width: 220, title: "Label and slip created", body: "Shipping label bought. Pick list and packing slip print in your warehouse." },
-  { left: 825, width: 220, title: "Packed and collected", body: "Your team packs from the slip. The delivery partner collects." },
-  { left: 1102, width: 210, title: "Tracked to the door", body: "Tracking sent to marketplace and customer. Margin calculated." },
+/** Where each ORDER_FLOW step's text sits under its dot. */
+const ORDER_FLOW_POSITIONS = [
+  { left: 0, width: 200 },
+  { left: 267, width: 220 },
+  { left: 546, width: 220 },
+  { left: 825, width: 220 },
+  { left: 1102, width: 210 },
 ];
 
 const MARGIN_LINE = "0,96 20,92 40,98 60,80 80,84 100,66 120,70 140,48 160,40 172,30";
@@ -198,7 +218,7 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
       <section style={{ padding: "96px 72px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 28, textAlign: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 14px", background: "var(--surf)", border: "1px solid var(--line2)", borderRadius: 999, fontSize: 14, color: "var(--muted2)" }}>
           <span style={{ fontFamily: MONO, fontSize: 12, background: LIME, padding: "2px 7px", borderRadius: 4, color: INK }}>BETA</span>
-          For Multi-Channel E-Commerce Businesses
+          {EYEBROW}
         </div>
         <h1 style={{ margin: 0, fontFamily: MONO, fontSize: 64, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1.16, whiteSpace: "nowrap" }}>
           <Highlight padding="0 12px" radius={8}>
@@ -206,7 +226,7 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
           </Highlight>
         </h1>
         <p style={{ margin: 0, fontSize: 20, lineHeight: 1.55, maxWidth: 1000, color: "var(--muted2)" }}>
-          Ship 10x the orders with the same team. No copying addresses, no buying labels, no chasing tracking numbers. skuspine runs it for every order, autonomously.
+          {SUBHEAD}
         </p>
         <div style={{ display: "flex", gap: 12, fontSize: 17, fontWeight: 600 }}>
           <a href="#" onClick={openForm} style={{ background: LIME, padding: "16px 26px", borderRadius: 8, color: INK }}>
@@ -291,7 +311,7 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
           <div style={{ ...subHeading, marginBottom: 24 }}>
             <span style={subHeadingNumber}>02</span>Then skuspine takes over every order, autonomously
           </div>
-          <div style={{ position: "relative", width: 1312, height: 516 }}>
+          <div style={{ position: "relative", width: 1312, height: 580 }}>
             <div style={{ position: "absolute", left: 50, top: 0, width: 100, display: "flex", justifyContent: "center" }}>
               <span style={flowPill}>ORDER IN</span>
             </div>
@@ -332,32 +352,33 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
               );
             })}
 
-            {ORDER_FLOW_STEPS.map((s) => (
-              <div key={s.title} style={{ position: "absolute", left: s.left, top: 128, width: s.width, display: "flex", flexDirection: "column", gap: 6, textAlign: "center" }}>
+            {ORDER_FLOW.map((s, i) => (
+              <div key={s.title} style={{ position: "absolute", ...ORDER_FLOW_POSITIONS[i], top: 128, display: "flex", flexDirection: "column", gap: 6, textAlign: "center" }}>
                 <h3 style={{ margin: 0, fontSize: 17, fontWeight: 600 }}>{s.title}</h3>
                 <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "var(--muted)" }}>{s.body}</p>
               </div>
             ))}
 
-            <svg width="1312" height="120" viewBox="0 0 1312 120" aria-hidden="true" style={{ position: "absolute", left: 0, top: 236 }}>
-              <path d="M516 6 L516 74" fill="none" strokeWidth="2" strokeDasharray="6 6" style={{ stroke: "var(--warn)" }} />
-              <path d="M1212 6 L1212 74" fill="none" strokeWidth="2" strokeDasharray="6 6" style={{ stroke: "var(--fg)" }} />
+            <svg width="1312" height="150" viewBox="0 0 1312 150" aria-hidden="true" style={{ position: "absolute", left: 0, top: 236 }}>
+              <path d="M516 6 L516 104" fill="none" strokeWidth="2" strokeDasharray="6 6" style={{ stroke: "var(--warn)" }} />
+              <path d="M1212 6 L1212 104" fill="none" strokeWidth="2" strokeDasharray="6 6" style={{ stroke: "var(--fg)" }} />
               <circle cx="516" cy="6" r="5" style={{ fill: "var(--warn)" }} />
               <circle cx="1212" cy="6" r="5" style={{ fill: "var(--fg)" }} />
             </svg>
 
-            <div style={{ position: "absolute", left: 0, top: 310, width: 620, height: 196, boxSizing: "border-box", background: "var(--warnbg)", border: "1.5px dashed var(--warn)", borderRadius: 14, padding: "28px 30px", display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ position: "absolute", left: 0, top: 340, width: 620, height: 240, boxSizing: "border-box", background: "var(--warnbg)", border: "1.5px dashed var(--warn)", borderRadius: 14, padding: "28px 30px", display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.1em", color: "var(--warntext)", fontWeight: 600 }}>IF SOMETHING BLOCKS AN ORDER</div>
               <h3 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>One queue. Your team decides.</h3>
               <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: "var(--muted2)" }}>
-                A wrong address, a delivery partner rejection or a stock conflict lands in one exception queue with everything needed to decide. Once your team makes the call, the order picks up exactly where it stopped.
+                {EXCEPTIONS_BODY}
               </p>
             </div>
 
-            <div style={{ position: "absolute", left: 652, top: 310, width: 660, height: 196, boxSizing: "border-box", background: "var(--card)", border: "1px solid var(--line2)", borderRadius: 14, padding: "28px 30px", display: "flex", flexDirection: "column", gap: 14 }}>
-              <div style={{ display: "flex" }}>
+            <div style={{ position: "absolute", left: 652, top: 340, width: 660, height: 240, boxSizing: "border-box", background: "var(--card)", border: "1px solid var(--line2)", borderRadius: 14, padding: "28px 30px", display: "flex", flexDirection: "column", gap: 14 }}>
+              <h3 style={{ margin: 0, display: "flex", fontSize: 12 }}>
                 <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.1em", fontWeight: 600, background: LIME, padding: "3px 8px", borderRadius: 4, color: INK }}>IF IT COMES BACK · RETURNS AND REFUNDS</span>
-              </div>
+              </h3>
+              <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: "var(--muted2)" }}>{RETURNS_INTRO}</p>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "14px 28px" }}>
                 {RETURNS_POINTS.map(([strong, rest]) => (
                   <div key={strong} style={{ display: "flex", gap: 10 }}>
@@ -383,7 +404,7 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
           <div style={card}>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ fontSize: 20, fontWeight: 600 }}>Stores</div>
-              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55, color: "var(--muted)" }}>Orders, stock and prices from every marketplace you sell on.</p>
+              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55, color: "var(--muted)" }}>{STORES_BODY}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", fontSize: 16 }}>
               {LIVE_STORES.map((s) => (
@@ -403,7 +424,7 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
           <div style={card}>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ fontSize: 20, fontWeight: 600 }}>Delivery partners</div>
-              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55, color: "var(--muted)" }}>One carrier network: rates compared, labels bought and tracking sent back automatically.</p>
+              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55, color: "var(--muted)" }}>{CARRIERS_BODY}</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10, fontSize: 14, color: "var(--muted)" }}>
               {CARRIERS.map((c) => (
@@ -412,12 +433,12 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
                 </div>
               ))}
             </div>
-            <div style={{ fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>More carriers available on request. Customs documents generated for every cross-border shipment.</div>
+            <div style={{ fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>{CARRIERS_NOTE}</div>
           </div>
           <div style={card}>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               <div style={{ fontSize: 20, fontWeight: 600 }}>Regions</div>
-              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55, color: "var(--muted)" }}>Sell and ship across borders, with cost and margin in the right currency.</p>
+              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55, color: "var(--muted)" }}>{REGIONS_BODY}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, fontFamily: MONO }}>
               {REGIONS.map(([region, currency]) => (
@@ -431,7 +452,22 @@ function LandingDesktop({ tick, openForm }: LayoutProps) {
                 </div>
               ))}
             </div>
-            <div style={{ fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>Multi-currency margin, tax jurisdictions and customs handled per order.</div>
+            <div style={{ fontSize: 15, lineHeight: 1.55, color: "var(--muted)" }}>{REGIONS_NOTE}</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Replacing your stack */}
+      <section style={{ padding: "0 72px 120px" }}>
+        <div style={{ background: "var(--panel)", color: "#E8EDE0", borderRadius: 16, padding: "56px 64px", display: "grid", gridTemplateColumns: "minmax(0, 2fr) minmax(0, 3fr)", gap: 64, alignItems: "center" }}>
+          <h2 style={{ margin: 0, fontFamily: MONO, fontSize: 40, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1.3 }}>
+            Replacing
+            <br />
+            <Highlight>your stack</Highlight>
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18, fontSize: 17, lineHeight: 1.6 }}>
+            <p style={{ margin: 0, color: "#C9CFBF" }}>{REPLACE_BODY[0]}</p>
+            <p style={{ margin: 0, fontWeight: 600 }}>{REPLACE_BODY[1]}</p>
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import LegalPage, { LegalSection, List, P } from "@/components/site/LegalPage";
 import { CONTACT_EMAIL } from "@/components/site/shared";
+import { LegalJsonLd } from "@/components/site/structuredData";
 
 export const metadata: Metadata = { title: "skuspine · Privacy policy" };
 
@@ -32,6 +33,7 @@ export default function PrivacyPage() {
       toc={TOC}
       seeAlso={{ href: "/terms", label: "Terms of service" }}
     >
+      <LegalJsonLd path="/privacy" name="Privacy policy" />
       <LegalSection {...section(0)}>
         <P>skuspine is operated by [LEGAL ENTITY NAME], registered at [REGISTERED ADDRESS], company number [COMPANY NUMBER] ("skuspine", "we", "us").</P>
         <P>
